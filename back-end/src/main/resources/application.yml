@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  security:
+    user:
+      name: hamdyYml
+      password: hamdyYml123
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@//localhost:1521/orclpdb
+    username: hr
+    password: hr
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  messages:
+    basename: i18n/message
+  data:
+   redis:
+     host: localhost
+     port: 6379
+
+token:
+  secret: mysupersecretkeymysupersecretkey1234
+  time: 24H

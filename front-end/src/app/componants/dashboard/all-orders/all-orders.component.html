@@ -1,0 +1,79 @@
+<div class="all-orders-container">
+  <h2>All Orders</h2>
+  <div class="filter-section">
+    <input
+      type="text"
+      placeholder="Filter by username..."
+      [(ngModel)]="filterUsername"
+      (input)="applyFilter()"
+    />
+  </div>
+  <table class="orders-table">
+    <thead>
+    <tr>
+      <th>Order Code</th>
+      <th>User</th>
+      <th>Total Price</th>
+      <th>Total Items</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.code }}</td>
+      <td>{{ order.account.username }}</td>
+      <td>{{ order.totalPrice | currency:'USD' }}</td>
+      <td>{{ order.totalNumber }}</td>
+      <td>{{ order.orderDate | date:'dd/MM/yyyy hh:mm:ss a' }}</td>
+      <td>
+        <button class="view-btn" (click)="viewDetails(order)">View</button>
+        <button class="delete-btn" (click)="deleteOrder(order.id)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="orders.length === 0 && totalOrders === 0" class="alert alert-secondary text-center mt-3 shadow-sm">
+    <i class="fas fa-ban text-danger"></i> No orders found
+  </div>
+  <!-- Pagination -->
+  <ngb-pagination
+    *ngIf="orders.length > 0"
+    [(page)]="pageNo"
+    [pageSize]="pageSize"
+    [collectionSize]="totalOrders"
+    (pageChange)="pageChange($event)"
+    [maxSize]="5"
+    [boundaryLinks]="true">
+  </ngb-pagination>
+
+  <!-- ✅ Overlay Modal -->
+  <div *ngIf="selectedOrder" class="modal-overlay" (click)="closeDetails()">
+    <div class="order-details-modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDetails()">×</button>
+
+      <h3>Order: {{ selectedOrder.code }}</h3>
+      <p><strong>User:</strong> {{ selectedOrder.account.username }}</p>
+      <p><strong>Date:</strong> {{ selectedOrder.orderDate | date:'dd/MM/yyyy hh:mm:ss a' }}</p>
+
+      <div class="order-summary">
+        <p>Total Items: {{ selectedOrder.totalNumber }}</p>
+        <p>Total Price: <span class="order-price">{{ selectedOrder.totalPrice | currency:'USD' }}</span></p>
+      </div>
+
+      <h4>Products</h4>
+      <div class="product-list">
+        <div *ngFor="let product of selectedOrder.products" class="product-card">
+          <img [src]="'../../../assets/img/' + product.image" alt="{{ product.name }}" />
+          <div class="product-info">
+            <h5>{{ product.name }}</h5>
+            <p>{{ product.price | currency:'USD' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

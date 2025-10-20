@@ -1,0 +1,78 @@
+.img{
+  height: 60px;
+}
+.no-orders {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 20px;
+  color: #555;
+}
+
+.no-orders h2 {
+  font-size: 28px;
+  color: #fea116;
+  margin-bottom: 10px;
+}
+
+.ftco-section {
+  padding: 40px 0;
+}
+
+.clickable-link {
+  color: #fea116; /* default link color */
+  cursor: pointer;
+  text-decoration: none; /* remove underline by default */
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.clickable-link:hover {
+  color: #e08d10; /* darker on hover */
+  text-decoration: underline;
+}
+
+.clickable-link:active {
+  color: #c6750d; /* even darker when clicked */
+}
+
+.clickable-link:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+/*message style*/
+.alert-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #ffb347, #ffcc33); /* تدرج برتقالي أنيق */
+  color: #222;
+  padding: 25px 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+  min-width: 320px;
+  max-width: 90%;
+}
+
+.alert-popup .msg-ar {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #222;
+}
+
+.alert-popup .msg-en {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+

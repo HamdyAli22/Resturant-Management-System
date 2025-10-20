@@ -1,0 +1,18 @@
+<div class="modal-header bg-danger text-white">
+  <h5 class="modal-title">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ title }}
+  </h5>
+  <button type="button" class="btn-close btn-close-white" aria-label="Close"
+          (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body text-center">
+  <p class="fs-5">{{ message }}</p>
+</div>
+
+<div class="modal-footer justify-content-center">
+  <button type="button" class="btn btn-outline-secondary px-4"
+          (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-danger px-4"
+          (click)="activeModal.close(true)">Delete</button>
+</div>

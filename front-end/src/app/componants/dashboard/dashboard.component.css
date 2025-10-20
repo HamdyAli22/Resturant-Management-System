@@ -1,0 +1,67 @@
+.dashboard-container {
+  display: flex;
+  min-height: 80vh;
+  background: #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin: 20px;
+}
+
+.dashboard-sidebar {
+  flex-shrink: 0;
+  width: 220px;
+  background: #212529;
+  color: #fff;
+  padding: 20px 10px;
+}
+
+.dashboard-sidebar .nav-link {
+  color: #ccc;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-sidebar .nav-link.active,
+.dashboard-sidebar .nav-link:hover {
+  background: #fea116;
+  color: #fff !important;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  padding: 30px;
+  background: #fff;
+  overflow-x: auto;
+}
+
+/* نضمن إن الأيقونات ترجع لألوانها المخصصة */
+.dashboard-sidebar .nav-link i {
+  transition: color 0.3s ease-in-out;
+}
+
+/* 🎨 ألوان مختلفة لكل أيقونة */
+.icon-history { color: #6c757d !important; }     /* رمادي */
+.icon-orders { color: #28a745 !important; }      /* أخضر */
+.icon-products { color: #ffc107 !important; }    /* أصفر */
+.icon-password { color: #17a2b8 !important; }    /* أزرق سماوي */
+.icon-disable { color: #dc3545 !important; }     /* أحمر */
+.icon-account { color: #0d6efd !important; }     /* أزرق أساسي */
+
+/* 🟠 عند hover فقط أو active تتحول الأيقونة للأبيض */
+.dashboard-sidebar .nav-link:hover i,
+.dashboard-sidebar .nav-link.active i {
+  filter: brightness(200%) !important;
+  color: #ffffff !important;
+}
+
+/* لكن لما تسيبها ترجع للونها الأصلي */
+.dashboard-sidebar .nav-link:not(:hover):not(.active) i {
+  filter: brightness(100%) !important;
+}
+

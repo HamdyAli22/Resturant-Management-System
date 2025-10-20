@@ -1,0 +1,118 @@
+/* Background */
+.account-details-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Card */
+.account-details-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  padding: 40px 35px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  color: #f1f1f1;
+  animation: fadeInUp 0.6s ease-in-out;
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  color: #00b4d8;
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: #2e2e42;
+  color: #fff;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #00b4d8;
+  box-shadow: 0 0 8px rgba(0, 180, 216, 0.3);
+}
+
+/* Button */
+.btn-save {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #00b4d8, #0077b6);
+  border: none;
+  color: white;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-save:hover {
+  background: linear-gradient(90deg, #0096c7, #005f99);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+}
+
+/* Popup */
+.alert-popup {
+  margin-top: 25px;
+  text-align: center;
+  background: rgba(25, 135, 84, 0.15);
+  border: 1px solid rgba(25, 135, 84, 0.5);
+  border-radius: 12px;
+  padding: 15px 10px;
+  color: #9cffb8;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.msg-ar {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #aaffaa;
+}
+
+.msg-en {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #d4ffd8;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

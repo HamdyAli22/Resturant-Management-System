@@ -1,0 +1,68 @@
+.no-products-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.no-products-card {
+  background: #fffaf3;
+  border: 2px dashed #fea116;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.no-products-card:hover {
+  transform: translateY(-5px);
+}
+
+.no-products-title {
+  color: #fea116;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.no-products-subtitle {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.product-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  padding: 6px 14px;  /* أكبر شوية عشان شكل الزرار أحلى */
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  text-align: center;
+  white-space: nowrap;
+  flex: 0 0 auto; /* الزرار يفضل بحجمه الطبيعي */
+  min-width: 110px; /* عشان الزرارين يطلعوا بنفس الحجم تقريبا */
+}
+
+.btn-action:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-action.add {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-action.details {
+  background-color: #28a745;
+  color: #fff;
+}

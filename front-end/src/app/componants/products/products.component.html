@@ -1,0 +1,61 @@
+
+<div class="tab-content">
+  <div id="tab-1" class="tab-pane fade show p-0 active">
+    <div class="row g-4">
+
+      <div class="no-products-box" *ngIf="products.length === 0 && (messageEn || messageAr)">
+        <div class="no-products-card">
+          <h4 class="no-products-title">
+            {{ messageEn }}
+          </h4>
+          <p class="no-products-subtitle">
+            {{ messageAr }}
+          </p>
+        </div>
+      </div>
+
+
+      <div *ngFor="let pro of products" class="col-lg-6">
+        <div class="d-flex align-items-center">
+          <img class="flex-shrink-0 img-fluid rounded" src="../../../assets/img/{{pro.image}}" alt="" style="width: 80px;">
+          <div class="w-100 d-flex flex-column text-start ps-4">
+            <h5 class="d-flex justify-content-between border-bottom pb-2">
+              <span>{{pro.name}}</span>
+              <span class="text-primary">${{pro.price}}</span>
+            </h5>
+            <small class="fst-italic">{{pro.description}}</small>
+            <div class="product-actions">
+              <button type="button" class="btn-action add" (click)="addProduct(pro)">Add to Card</button>
+<!--              <button type="button" class="btn-action edit" (click)="editProduct(pro)">Edit</button>-->
+<!--              <button type="button" class="btn-action delete" (click)="deleteProduct(pro)">Delete</button>-->
+              <button type="button" class="btn-action details" (click)="showDetails(pro)">Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="products.length !== 0" class="col-md-9 pag" style="padding-left: 30%">
+        <ngb-pagination
+          [(page)]="pageNo"
+          [pageSize]="pageSize"
+          [collectionSize]="totalProducts"
+          (pageChange)="doPagination()"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+        >
+        </ngb-pagination>
+
+        <div class="sel">
+          <span class="mr-2">Page Size</span>
+          <select (change)="changePageSize($event)">
+            <option>2</option>
+            <option>5</option>
+            <option selected="true">10</option>
+            <option>20</option>
+            <option>50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

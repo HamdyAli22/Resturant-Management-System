@@ -1,0 +1,119 @@
+<div class="messages-wrapper">
+  <div class="messages-card">
+    <h3 class="title">Contact Messages</h3>
+
+    <div class="filter-section">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          placeholder="Search by username, email, subject, or message..."
+          [(ngModel)]="searchKeyword"
+          (input)="applyFilter()"
+        />
+      </div>
+    </div>
+
+
+    <!-- ✅ عرض الكروت -->
+    <div *ngFor="let msg of messages" class="message-item">
+
+      <!-- ✅ Subject -->
+      <div class="msg-field">
+        <label>Subject:</label>
+        <ng-container *ngIf="!isAdmin() && !msg.reply">
+          <input
+            [(ngModel)]="msg.subject"
+            class="msg-input"
+            type="text"
+            placeholder="Enter subject..."
+          />
+        </ng-container>
+        <p *ngIf="isAdmin() || msg.reply" class="msg-value">{{ msg.subject }}</p>
+      </div>
+
+      <!-- ✅ Name -->
+      <div class="msg-field">
+        <label>Name:</label>
+        <p class="msg-value">{{ msg.name }}</p>
+      </div>
+
+      <!-- ✅ Email -->
+      <div class="msg-field">
+        <label>Email:</label>
+        <p class="msg-value">{{ msg.email }}</p>
+      </div>
+
+      <div class="msg-field" *ngIf="msg.account && msg.account.username">
+        <label>Username:</label>
+        <p class="msg-value">{{ msg.account.username }}</p>
+      </div>
+
+      <!-- ✅ Message -->
+      <div class="msg-field">
+        <label>Message:</label>
+        <ng-container *ngIf="!isAdmin() && !msg.reply">
+          <textarea
+            [(ngModel)]="msg.message"
+            class="msg-textarea scrollable"
+            placeholder="Edit your message..."
+          ></textarea>
+        </ng-container>
+        <div *ngIf="isAdmin() || msg.reply" class="msg-box scrollable">{{ msg.message }}</div>
+      </div>
+
+      <div class="reply-box" *ngIf="!isAdmin()">
+        <label>Admin Reply:</label>
+        <div class="msg-box scrollable">
+          {{ msg.reply && msg.reply.trim() !== '' ? msg.reply : 'No reply yet' }}
+        </div>
+      </div>
+
+      <!-- ✅ للأدمن فقط -->
+      <div *ngIf="isAdmin()" class="reply-section">
+        <label>Reply:</label>
+        <textarea
+          [(ngModel)]="msg.reply"
+          placeholder="Type your reply..."
+          class="scrollable"
+        ></textarea>
+        <button (click)="sendReply(msg)">Reply</button>
+      </div>
+
+      <!-- ✅ زرار Save Changes لليوزر -->
+      <div *ngIf="!isAdmin() && !msg.reply" class="reply-section">
+        <button (click)="saveChanges(msg)">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- ✅ Pagination -->
+    <div *ngIf="messages.length !== 0" class="col-md-12 pag" style="text-align: center; margin-top: 30px;">
+      <ngb-pagination
+        [(page)]="pageNo"
+        [pageSize]="pageSize"
+        [collectionSize]="totalMessages"
+        (pageChange)="pageChange($event)"
+        [maxSize]="5"
+        [boundaryLinks]="true"
+        class="pagination-bar"
+      ></ngb-pagination>
+
+      <div class="sel">
+        <span class="mr-2">Page Size</span>
+        <select (change)="changePageSize($event)">
+          <option>2</option>
+          <option>5</option>
+          <option selected="true">10</option>
+          <option>20</option>
+          <option>50</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Popup الرسالة -->
+  <div class="popup-message" *ngIf="messageEn || messageAr">
+    <p>{{ messageEn }}</p>
+    <p>{{ messageAr }}</p>
+  </div>
+</div>

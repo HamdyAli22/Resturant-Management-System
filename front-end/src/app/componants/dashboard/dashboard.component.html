@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="dashboard-sidebar">
+    <ul class="nav flex-column nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="orders-history" routerLinkActive="active">
+          <i class="fas fa-history icon-history"></i> Orders History
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a class="nav-link" routerLink="all-orders" routerLinkActive="active">
+          <i class="fas fa-shopping-cart icon-orders"></i> All Orders
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a class="nav-link" routerLink="products" routerLinkActive="active">
+          <i class="fas fa-box-open icon-products"></i> Products
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="change-password" routerLinkActive="active">
+          <i class="fas fa-key icon-password"></i> Change Password
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a class="nav-link" routerLink="disable-account" routerLinkActive="active">
+          <i class="fas fa-user-slash icon-disable"></i> Disable Account
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="account-details" routerLinkActive="active">
+          <i class="fas fa-user-edit icon-account"></i> Update Account Details
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="contact-messages" routerLinkActive="active">
+          <i class="fas fa-envelope icon-contact"></i> Contact Messages
+        </a>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="dashboard-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

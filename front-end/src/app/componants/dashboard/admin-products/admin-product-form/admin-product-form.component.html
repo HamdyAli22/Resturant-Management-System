@@ -1,0 +1,163 @@
+<!-- Notification -->
+<div *ngIf="messageEn || messageAr" class="notification-container fade-in">
+  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+    <div>
+      <strong *ngIf="messageEn">{{ messageEn }}</strong><br>
+      <span *ngIf="messageAr" class="text-muted">{{ messageAr }}</span>
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="clearMessage()"></button>
+  </div>
+</div>
+
+<div class="modal-header bg-primary text-white">
+  <h5 class="modal-title">
+    {{ mode === 'add'
+    ? '➕ Add Product'
+    : mode === 'edit'
+      ? '✏️ Edit Product'
+      : '👁️ View Product' }}
+  </h5>
+  <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body bg-light">
+  <form class="row g-3">
+    <fieldset [disabled]="isReadOnly()">
+    <!-- Name -->
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Name</label>
+      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.name" name="name" placeholder="Enter product name">
+    </div>
+
+    <!-- Price -->
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Price</label>
+      <input type="number" class="form-control shadow-sm" [(ngModel)]="product.price" name="price" placeholder="Enter product price">
+    </div>
+
+    <!-- Description -->
+    <div class="col-12">
+      <label class="form-label fw-bold">Description</label>
+      <textarea rows="2" class="form-control shadow-sm" [(ngModel)]="product.description" name="description" placeholder="Write short description..."></textarea>
+    </div>
+
+    <!-- Image -->
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Image</label>
+      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.image" name="image" placeholder="Upload product image">
+    </div>
+
+    <!-- Image upload -->
+<!--    <div class="col-md-6">-->
+<!--      <label class="form-label fw-bold">Image</label>-->
+<!--      <div class="input-group shadow-sm">-->
+<!--        &lt;!&ndash; لو Edit: نعرض الصورة الحالية &ndash;&gt;-->
+<!--        <div *ngIf="mode === 'edit' && product.image" class="w-100">-->
+<!--          <img [src]="'../../../assets/img/' + product.image"-->
+<!--               alt="Product Image"-->
+<!--               class="img-thumbnail mb-2"-->
+<!--               width="150" height="150">-->
+<!--          <div class="input-group">-->
+<!--            <select class="form-select" [(ngModel)]="selectedFolder" name="folder">-->
+<!--              <option value="cold-drinks">cold-drinks</option>-->
+<!--              <option value="foods">foods</option>-->
+<!--              <option value="hot-drinks">hot-drinks</option>-->
+<!--              <option value="other-foods">other-foods</option>-->
+<!--              <option value="sweets">sweets</option>-->
+<!--            </select>-->
+<!--            <input type="file" class="form-control" (change)="onFileSelected($event)">-->
+<!--          </div>-->
+<!--          <small class="text-muted">Choose a new image if you want to change the current one.</small>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; لو Add: بس Dropdown + File input &ndash;&gt;-->
+<!--        <div *ngIf="mode === 'add'" class="input-group">-->
+<!--          <select class="form-select" [(ngModel)]="selectedFolder" name="folder">-->
+<!--            <option value="cold-drinks">cold-drinks</option>-->
+<!--            <option value="foods">foods</option>-->
+<!--            <option value="hot-drinks">hot-drinks</option>-->
+<!--            <option value="other-foods">other-foods</option>-->
+<!--            <option value="sweets">sweets</option>-->
+<!--          </select>-->
+<!--          <input type="file" class="form-control" (change)="onFileSelected($event)">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+
+    <!-- Category (Dropdown) -->
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Category</label>
+      <div class="input-group shadow-sm">
+    <span class="input-group-text bg-white">
+      <i class="fa fa-list text-primary"></i>
+    </span>
+        <select class="form-select" [(ngModel)]="product.categoryId" name="categoryId">
+          <option value="" disabled selected>-- Select Category --</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">
+            {{ cat.name }} - {{ cat.flag }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+    <hr class="my-3">
+
+    <h6 class="text-primary fw-bold">Product Details</h6>
+
+    <!-- Ingredients -->
+    <div class="col-12">
+      <label class="form-label fw-bold">Ingredients</label>
+      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.ingredients" name="ingredients" placeholder="List ingredients...">
+    </div>
+
+    <!-- Stock Availability -->
+    <div class="col-12">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="product.productDetailsDto.stockAvailability" name="stockAvailability">
+        <label class="form-check-label fw-bold">Available in Stock</label>
+      </div>
+    </div>
+
+    <!-- Special Instructions -->
+    <div class="col-12">
+      <label class="form-label fw-bold">Special Instructions</label>
+      <textarea rows="2" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.specialInstructions" name="specialInstructions" placeholder="Optional notes..."></textarea>
+    </div>
+
+    <!-- Expiry Date -->
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Expiry Date</label>
+      <input type="date" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.expiryDate" name="expiryDate" [min]="todayDate">
+    </div>
+    </fieldset>
+  </form>
+</div>
+
+<div class="modal-footer bg-light d-flex justify-content-end align-items-center gap-2">
+  <button
+    type="button"
+    class="btn-cancel fw-bold"
+    (click)="activeModal.dismiss()">
+    ❌ Cancel
+  </button>
+
+  <button
+    *ngIf="!isReadOnly()"
+    type="button"
+    class="btn-save fw-bold"
+    (click)="save()">
+    💾 Save
+  </button>
+
+  <button
+    *ngIf="isReadOnly()"
+    type="button"
+    class="btn-action add fw-bold"
+    (click)="addToCard(product)">
+    🛒 Add to Card
+  </button>
+</div>
+
+

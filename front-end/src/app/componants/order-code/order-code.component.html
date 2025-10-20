@@ -1,0 +1,9 @@
+<div class="order-code-wrapper" *ngIf="showOrderCode">
+  <div class="order-card">
+    <h2>🎉 Order Created Successfully!</h2>
+    <p>Your order code is:</p>
+    <div class="order-code-box">{{orderCode}}</div>
+
+    <button class="back-btn" (click)="goToProducts()">🛒 Continue Shopping</button>
+  </div>
+</div>

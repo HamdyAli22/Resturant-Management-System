@@ -1,0 +1,134 @@
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+
+h6 {
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Notification Styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  width: auto;
+  max-width: 350px;
+}
+
+.alert {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 15px 20px;
+  font-size: 14px;
+}
+
+.alert strong {
+  font-weight: 600;
+}
+
+.alert .btn-close {
+  background: none;
+  border: none;
+  opacity: 0.6;
+}
+
+.alert .btn-close:hover {
+  opacity: 1;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hover-scale {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.btn-outline-danger {
+  border-width: 2px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* ------------------------------- */
+/* أزرار المودال (Cancel / Save / Add to Card) */
+/* ------------------------------- */
+
+.btn-cancel {
+  background-color: #6c757d; /* رمادي أنيق */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  min-width: 110px;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-cancel:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-save {
+  background-color: #28a745; /* أخضر */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  min-width: 110px;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* نفس استايل زرار Add to Card اللى برة */
+.btn-action.add {
+  background-color: #dc3545; /* أحمر */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  min-width: 110px;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-action.add:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,54 @@
+<div class="disable-account-container">
+
+  <h2 class="page-title">Manage Accounts</h2>
+
+  <div class="popup" *ngIf="messageEn || messageAr">
+    <div class="popup-content">
+      <p class="en">{{ messageEn }}</p>
+      <p class="ar">{{ messageAr }}</p>
+    </div>
+  </div>
+
+  <div class="table-wrapper" *ngIf="accounts && accounts.length > 0">
+    <table class="accounts-table">
+      <thead>
+      <tr>
+        <th>Username</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Roles</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let account of accounts">
+        <td>{{ account.username }}</td>
+        <td>{{ account.accountDetails?.phoneNumber || '-' }}</td>
+        <td>{{ account.accountDetails?.age || '-' }}</td>
+        <td>{{ account.accountDetails?.address || '-' }}</td>
+        <td>
+            <span *ngFor="let role of account.roles; let i = index">
+              {{ role.roleName }}<span *ngIf="i < account.roles.length - 1">, </span>
+            </span>
+        </td>
+        <td>
+            <span [class.enabled]="account.enabled" [class.disabled]="!account.enabled">
+              {{ account.enabled ? 'Enabled' : 'Disabled' }}
+            </span>
+        </td>
+        <td>
+          <button
+            (click)="toggleStatus(account)"
+            [class.deactivate]="account.enabled"
+            [class.activate]="!account.enabled">
+            {{ account.enabled ? 'Disable' : 'Enable' }}
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

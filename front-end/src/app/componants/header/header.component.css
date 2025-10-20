@@ -1,0 +1,15 @@
+.dropdown-menu .dropdown-item {
+  padding: 10px 15px;
+  font-size: 14px;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  border-radius: 6px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(4px);
+}
+
+.dropdown-menu i {
+  min-width: 20px; /* عشان الأيقونات تبقى محاذية للنص */
+}

@@ -1,0 +1,33 @@
+<div class="account-details-wrapper">
+  <div class="account-details-card">
+    <h3 class="title">Account Details</h3>
+
+    <form (ngSubmit)="saveDetails()" #detailsForm="ngForm" novalidate>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" [(ngModel)]="details.phoneNumber" name="phoneNumber"
+               placeholder="Enter your phone number" required>
+      </div>
+
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" [(ngModel)]="details.age" name="age"
+               placeholder="Enter your age" min="16" max="80" required>
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" [(ngModel)]="details.address" name="address"
+               placeholder="Enter your address" required>
+      </div>
+
+      <button type="submit" class="btn-save">Save</button>
+    </form>
+
+    <!-- ✅ Popup for both Arabic + English messages -->
+    <div *ngIf="messageAr || messageEn" class="alert-popup">
+      <p class="msg-ar">{{ messageAr }}</p>
+      <p class="msg-en">{{ messageEn }}</p>
+    </div>
+  </div>
+</div>
