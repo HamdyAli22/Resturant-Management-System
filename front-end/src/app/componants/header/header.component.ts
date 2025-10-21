@@ -33,4 +33,8 @@ export class HeaderComponent {
     return this.isUserLogin() && (this.router.url.startsWith('/products') || this.router.url.startsWith('/category'));
   }
 
+  isAdmin(): boolean{
+    return this.authService.isAdmin();
+  }
+
 }

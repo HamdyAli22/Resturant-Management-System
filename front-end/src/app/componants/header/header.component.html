@@ -12,7 +12,7 @@
       <input *ngIf="showSearch()" #key class="form-control" type="search" placeholder="Search" aria-label="Search" (input)="search(key.value)">
 <!--      <button class="btn btn-outline-success" type="submit" (click)="search(key.value)">Search</button>-->
       <div class="navbar-nav ms-auto py-0 pe-4">
-        <div *ngIf="isUserLogin()" class="nav-item nav-link active"><a routerLink="/contact-info">Contact</a></div>
+        <div *ngIf="isUserLogin() && !isAdmin()" class="nav-item nav-link active"><a routerLink="/contact-info">Contact</a></div>
         <div class="nav-item nav-link active"> </div>
         <div *ngIf="isUserLogin()" class="nav-item nav-link active"><a routerLink="/chefs">Team</a></div>
         <div *ngIf="!isUserLogin()" class="nav-item nav-link active"><a routerLink="/login">Login</a></div>
