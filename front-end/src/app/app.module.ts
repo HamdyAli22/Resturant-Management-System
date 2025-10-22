@@ -30,6 +30,7 @@ import { AdminProductFormComponent } from './componants/dashboard/admin-products
 import { ConfirmDialogComponent } from './componants/confirm-dialog/confirm-dialog-component';
 import { AccountDetailsComponent } from './componants/dashboard/account-details/account-details.component';
 import { ContactMessagesComponent } from './componants/dashboard/contact-messages/contact-messages.component';
+import { NotificationComponent } from './componants/notification/notification.component';
 
 // http://localhost:4200/
 export const routes: Routes = [
@@ -103,7 +104,8 @@ export const routes: Routes = [
     AdminProductFormComponent,
     ConfirmDialogComponent,
     AccountDetailsComponent,
-    ContactMessagesComponent
+    ContactMessagesComponent,
+    NotificationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

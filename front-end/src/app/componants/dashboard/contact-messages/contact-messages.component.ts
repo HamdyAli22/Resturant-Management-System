@@ -82,7 +82,7 @@ export class ContactMessagesComponent implements OnInit {
       return;
     }
 
-    this.contactService.replyToMessage(msg).subscribe({
+    this.contactService.updateMessage(msg).subscribe({
       next: (updated) => {
         this.messageEn = 'Reply sent successfully';
         this.messageAr = 'تم إرسال الرد بنجاح';
@@ -116,7 +116,7 @@ export class ContactMessagesComponent implements OnInit {
 
 
   saveChanges = (msg: ContactInfo) => {
-    this.contactService.replyToMessage(msg).subscribe({
+    this.contactService.updateMessage(msg).subscribe({
       next: (res) => {
         this.messageEn = 'Message updated successfully';
         this.messageAr = 'تم تحديث الرسالة بنجاح';

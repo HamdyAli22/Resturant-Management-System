@@ -26,7 +26,17 @@
             <span>Dashboard</span>
           </a>
         </div>
-
+        <div *ngIf="isUserLogin()" class="nav-item me-3">
+          <div class="position-relative">
+            <i class="fas fa-bell fa-lg text-warning" (click)="toggleNotifications()"></i>
+            <span
+              *ngIf="unreadCount > 0"
+              class="badge bg-danger rounded-circle notification-badge"
+            >
+      {{ unreadCount }}
+            </span>
+          </div>
+        </div>
 
 
         <!--        <div *ngIf="isUserLogin()" class="nav-item dropdown">-->
@@ -59,6 +69,19 @@
     </div>
     <app-card *ngIf="showCard()"></app-card>
   </nav>
+
+  <!-- ✅ Notification Dropdown Component -->
+  <app-notification
+    *ngIf="showNotifications"
+    (closed)="toggleNotifications()"
+    (unreadCountChanged)="unreadCount = $event"
+  ></app-notification>
+
+  <div
+    *ngIf="showNotifications"
+    class="overlay"
+    (click)="toggleNotifications()"
+  ></div>
 
   <div class="container-xxl py-5 bg-dark hero-header mb-5">
   </div>

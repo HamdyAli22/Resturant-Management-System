@@ -89,4 +89,31 @@ public class NotificationServiceImpl implements NotificationService {
         Notification updated = notificationRepo.save(notification);
         return notificationMapper.toNotificationDto(updated);
     }
+
+    @Override
+    public void handleNotification(Account user, Account admin, String subject,String type){
+        Notification notification = new Notification();
+        notification.setType(type);
+        switch (type){
+            case "NEW_MESSAGE":
+                notification.setAccount(admin);
+                notification.setMessage("User " + user.getUsername() + " sent a new message: \"" + subject + "\"");
+                break;
+            case "UPDATE_MESSAGE":
+//                Account admin = accountRepo.findFirstByRoles_RoleNameIgnoreCase("ADMIN")
+//                        .orElseThrow(() -> new RuntimeException("admin.not.found"));
+                notification.setAccount(admin);
+                notification.setMessage("User " + user.getUsername() + " updated their message: \"" + subject + "\"");
+                break;
+            case "ADMIN_REPLY":
+                notification.setAccount(user);
+                notification.setMessage("Admin replied to your message: \"" + subject + "\"");
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown notification type: " + type);
+        }
+
+        notification.setRead(false);
+        notificationRepo.save(notification);
+    }
 }

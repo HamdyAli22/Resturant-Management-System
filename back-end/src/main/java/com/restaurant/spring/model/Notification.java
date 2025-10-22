@@ -23,6 +23,8 @@ public class Notification extends BaseEntity{
     @Column(nullable = false)
     private boolean read = false;
 
+    private String type;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;

@@ -1,0 +1,88 @@
+/* =====================[ Notification Dropdown ]===================== */
+.notification-dropdown {
+  position: absolute;
+  top: 45px; /* 👈 أقرب للأيقونة بدون فراغ كبير */
+  right: -10px; /* 👈 لتكون بمحاذاة الجرس بدقة */
+  width: 400px; /* 👈 زودنا العرض */
+  max-height: 550px; /* 👈 زودنا الطول */
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  z-index: 1050;
+  animation: slideDown 0.3s ease;
+  font-size: 15px; /* 👈 كبرنا الخط */
+}
+
+/* Scrollbar */
+.notification-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+.notification-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Header & Tabs */
+.card-header {
+  border-bottom: 1px solid #dee2e6;
+  padding: 14px 18px;
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #333;
+}
+
+.notification-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: none;
+}
+
+.notification-tabs .nav-link {
+  font-weight: 500;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.notification-tabs .nav-link.active {
+  color: #ffc107;
+  border-bottom: 2px solid #ffc107;
+}
+
+/* Notification Items */
+.notification-item {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f2f2f2;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+/* النقطة الحمراء بجانب الإشعارات غير المقروءة */
+.unread-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #dc3545;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: 8px;
+  margin-top: 4px;
+}
+
+/* Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

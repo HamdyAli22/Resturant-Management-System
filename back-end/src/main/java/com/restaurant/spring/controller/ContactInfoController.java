@@ -41,9 +41,9 @@ public class ContactInfoController {
         return ResponseEntity.ok(contacts);
     }
 
-    @PutMapping("/reply")
-    public ResponseEntity<ContactInfoDto> replyToMessage(@RequestBody @Valid ContactInfoDto contactInfoDto) {
-        ContactInfoDto updated = contactInfoService.replyToMessage(contactInfoDto);
+    @PutMapping("/update-message")
+    public ResponseEntity<ContactInfoDto> updateMessage(@RequestBody @Valid ContactInfoDto contactInfoDto) {
+        ContactInfoDto updated = contactInfoService.updateMessage(contactInfoDto);
         return ResponseEntity.ok(updated);
     }
 

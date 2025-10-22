@@ -1,15 +1,48 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../service/auth.service';
+import {NotificationService} from '../../../service/notification.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
+  unreadCount = 0;
+  showNotifications = false;
+  username: string;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router,
+              private authService: AuthService,
+              private notificationService: NotificationService) {
+  }
+
+  ngOnInit(): void {
+    this.username = sessionStorage.getItem('userName') || '';
+    if (this.username) {
+      this.loadUnreadCount();
+      setInterval(() => this.loadUnreadCount(), 10000);
+    }
+
+    this.authService.userLoggedIn.subscribe(username => {
+      this.username = username;
+      this.loadUnreadCount();
+      setInterval(() => this.loadUnreadCount(), 10000);
+    });
+
+  }
+
+  loadUnreadCount(): void {
+    if (!this.username) { return; }
+    this.notificationService.getUnreadByUser(this.username).subscribe({
+      next: (data) => (this.unreadCount = data.length),
+      error: () => (this.unreadCount = 0)
+    });
+  }
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
   }
 
   search(key: string): void {

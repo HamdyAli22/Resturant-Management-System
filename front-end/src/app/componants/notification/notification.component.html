@@ -1,0 +1,55 @@
+<div class="notification-dropdown card shadow-lg border-0 rounded-3">
+  <div class="card-header bg-light">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold text-dark">Notifications</h5>
+      <ul class="nav nav-tabs card-header-tabs notification-tabs">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [ngClass]="{ 'active': activeTab === 'all' }"
+            (click)="setActiveTab('all')"
+          >
+            All
+          </a>
+        </li>
+        <li class="nav-item position-relative">
+          <a
+            class="nav-link"
+            [ngClass]="{ 'active': activeTab === 'unread' }"
+            (click)="setActiveTab('unread')"
+          >
+            Unread
+            <span
+              *ngIf="unreadCount > 0"
+              class="badge bg-danger ms-1"
+            >
+              {{ unreadCount }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-body p-0">
+    <div
+      *ngIf="filteredNotifications().length === 0"
+      class="text-center py-4 text-muted"
+    >
+      No notifications
+    </div>
+
+    <div
+      *ngFor="let n of filteredNotifications()"
+      class="notification-item d-flex justify-content-between align-items-start px-3 py-3 border-bottom"
+      [class.bg-light]="!n.read"
+      (click)="markAsRead(n)"
+    >
+      <div>
+        <div class="fw-semibold text-dark">{{ n.message }}</div>
+        <small class="text-muted">{{ getTimeAgo(n.createdDate) }}</small>
+      </div>
+      <div *ngIf="!n.read" class="unread-dot"></div>
+    </div>
+  </div>
+</div>

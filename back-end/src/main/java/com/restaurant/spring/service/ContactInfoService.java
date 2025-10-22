@@ -10,6 +10,6 @@ public interface ContactInfoService {
     ContactInfoDto createContactInfo(ContactInfoDto contactInfoDto);
     ContactInfoResponseVm getAllContacts(int page, int size);
     ContactInfoResponseVm getContactsByUsername(String username,int page, int size);
-    ContactInfoDto replyToMessage(ContactInfoDto contactInfoDto);
+    ContactInfoDto updateMessage(ContactInfoDto contactInfoDto);
     ContactInfoResponseVm searchContacts(String keyword, int page, int size);
 }

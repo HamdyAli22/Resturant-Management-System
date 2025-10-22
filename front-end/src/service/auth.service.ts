@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Product} from '../model/product';
@@ -10,6 +10,8 @@ import {map} from 'rxjs/operators';
 export class AuthService {
 
   baseUrl = 'http://localhost:8081/auth/';
+  userLoggedIn = new EventEmitter<string>();
+
   constructor(private http: HttpClient) {
   }
 
@@ -23,8 +25,15 @@ export class AuthService {
 
   login(username: string, password: string): Observable<any>{
     return this.http.post<any>(this.baseUrl +  'login', {username, password}).pipe(
-      map(
-        response => response
+      map(response => {
+        if (response?.token) {
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userName', response.username);
+          sessionStorage.setItem('roles', response.roles);
+          this.userLoggedIn.emit(username);
+        }
+        return response;
+        }
       )
     );
   }

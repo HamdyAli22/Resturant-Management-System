@@ -2,6 +2,7 @@ package com.restaurant.spring.service;
 
 import com.restaurant.spring.dto.NotificationDto;
 import com.restaurant.spring.dto.security.AccountDto;
+import com.restaurant.spring.model.security.Account;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface NotificationService {
     List<NotificationDto> getUnreadNotifications(String username);
 
     NotificationDto markAsRead(Long notificationId);
+
+    void handleNotification(Account user, Account admin, String subject,String type);
 }

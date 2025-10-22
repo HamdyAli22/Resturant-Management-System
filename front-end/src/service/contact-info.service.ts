@@ -24,8 +24,8 @@ export class ContactInfoService {
     return this.http.get(this.baseUrl + '/user-contacts?username=' + username + '&page=' + pageNo + '&size=' + pageSize);
   }
 
-  replyToMessage(contact: ContactInfo): Observable<ContactInfo> {
-    return this.http.put<ContactInfo>(this.baseUrl + '/reply', contact);
+  updateMessage(contact: ContactInfo): Observable<ContactInfo> {
+    return this.http.put<ContactInfo>(this.baseUrl + '/update-message', contact);
   }
 
   searchMessages(keyword: string, pageNo: number, pageSize: number): Observable<any> {

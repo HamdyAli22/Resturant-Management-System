@@ -13,6 +13,7 @@ import com.restaurant.spring.repo.ContactInfoRepo;
 import com.restaurant.spring.repo.NotificationRepo;
 import com.restaurant.spring.repo.security.AccountRepo;
 import com.restaurant.spring.service.ContactInfoService;
+import com.restaurant.spring.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,18 +37,22 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     private AccountMapper accountMapper;
     private AccountRepo accountRepo;
     private NotificationRepo notificationRepo;
+    private NotificationService notificationService;
+    private String NotificationType;
 
     @Autowired
     public ContactInfoServiceImpl(ContactInfoRepo contactInfoRepo,
                                   ContactInfoMapper contactInfoMapper,
                                   AccountMapper accountMapper,
                                   AccountRepo accountRepo,
-                                  NotificationRepo notificationRepo) {
+                                  NotificationRepo notificationRepo,
+                                  NotificationService notificationService) {
         this.contactInfoRepo = contactInfoRepo;
         this.contactInfoMapper = contactInfoMapper;
         this.accountMapper = accountMapper;
         this.accountRepo = accountRepo;
         this.notificationRepo = notificationRepo;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -76,6 +81,11 @@ public class ContactInfoServiceImpl implements ContactInfoService {
         contactInfo.setAccount(account);
 
         ContactInfo savedContact = contactInfoRepo.save(contactInfo);
+
+        Account admin = accountRepo.findFirstByRoles_RoleNameIgnoreCase("ADMIN")
+                .orElseThrow(() -> new RuntimeException("admin.not.found"));
+
+        notificationService.handleNotification(account,admin,contactInfo.getSubject(), "NEW_MESSAGE");
 
         return contactInfoMapper.toContactInfoDto(savedContact);
     }
@@ -117,7 +127,9 @@ public class ContactInfoServiceImpl implements ContactInfoService {
             @CacheEvict(value = "contactsByUsername", allEntries = true),
             @CacheEvict(value = "searchContacts", allEntries = true)
     })
-    public ContactInfoDto replyToMessage(ContactInfoDto contactInfoDto) {
+    public ContactInfoDto updateMessage(ContactInfoDto contactInfoDto) {
+
+        Account user;
         ContactInfo existing = contactInfoRepo.findById(contactInfoDto.getId())
                 .orElseThrow(() -> new RuntimeException("contact.not.found"));
 
@@ -133,7 +145,21 @@ public class ContactInfoServiceImpl implements ContactInfoService {
         AccountDto currentUserDto = (AccountDto) authentication.getPrincipal();
         Account currentAccount = accountMapper.toAccount(currentUserDto);
 
-        handleNotification(currentAccount, existing.getAccount(), existing.getSubject());
+        boolean isAdmin = currentAccount.getRoles().stream()
+                .anyMatch(r -> r.getRoleName().equalsIgnoreCase("ADMIN"));
+
+        Account admin = accountRepo.findFirstByRoles_RoleNameIgnoreCase("ADMIN")
+                        .orElseThrow(() -> new RuntimeException("admin.not.found"));
+
+        if(isAdmin){
+            NotificationType = "ADMIN_REPLY";
+            user = existing.getAccount();
+        }else{
+            NotificationType = "UPDATE_MESSAGE";
+            user = currentAccount;
+        }
+
+        notificationService.handleNotification(user,admin,existing.getSubject(),NotificationType);
         //End handleNotification
 
         return contactInfoMapper.toContactInfoDto(saved);
@@ -188,22 +214,5 @@ public class ContactInfoServiceImpl implements ContactInfoService {
         }
     }
 
-    private void handleNotification(Account sender, Account messageOwner, String subject){
-        boolean isAdmin = sender.getRoles().stream()
-                .anyMatch(r -> r.getRoleName().equalsIgnoreCase("ADMIN"));
 
-        Notification notification = new Notification();
-
-        if(isAdmin){
-            notification.setAccount(messageOwner);
-            notification.setMessage("Admin replied to your message: \"" + subject + "\"");
-        }else{
-            Account admin = accountRepo.findFirstByRoles_RoleNameIgnoreCase("ADMIN")
-                    .orElseThrow(() -> new RuntimeException("admin.not.found"));
-            notification.setAccount(admin);
-            notification.setMessage("User " + sender.getUsername() + " updated their message: \"" + subject + "\"");
-        }
-        notification.setRead(false);
-        notificationRepo.save(notification);
-    }
 }
