@@ -120,7 +120,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
         if(contacts.isEmpty()){
             throw new RuntimeException("contacts.not.found");
         }
-
+        
         List<ContactInfoDto> contactInfoDtos = contactInfoMapper.toContactInfoDtoList(contacts.getContent());
         return new ContactInfoResponseVm(contactInfoDtos,contacts.getTotalElements());
     }

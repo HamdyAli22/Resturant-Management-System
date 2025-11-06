@@ -7,7 +7,12 @@
     </a>
 
     <!-- ✅ Toggle for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
       <span class="fa fa-bars"></span>
     </button>
 
@@ -30,9 +35,10 @@
           <a routerLink="/signup">Signup</a>
         </div>
 
+        <!-- ✅ Dashboard -->
         <div *ngIf="isUserLogin()" class="nav-item">
           <a routerLink="/dashboard" class="nav-link d-flex align-items-center dashboard-link">
-            <i class="fas fa-columns me-2"></i>
+            <i class="fas fa-columns"></i>
             <span>Dashboard</span>
           </a>
         </div>
@@ -44,7 +50,7 @@
         <app-card *ngIf="showCard()"></app-card>
 
         <!-- ✅ Notification -->
-        <div *ngIf="isUserLogin()" class="nav-item me-2 position-relative notification-icon">
+        <div *ngIf="isUserLogin()" class="nav-item position-relative notification-icon">
           <i class="fas fa-bell fa-lg text-warning" (click)="toggleNotifications()"></i>
           <span *ngIf="unreadCount > 0" class="badge bg-danger rounded-circle notification-badge">
             {{ unreadCount }}
@@ -61,7 +67,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i class="fas fa-user-circle fa-lg text-warning me-2"></i>
+            <i class="fas fa-user-circle fa-lg text-warning"></i>
             <span class="fw-semibold text-light">{{ username }}</span>
           </a>
 
