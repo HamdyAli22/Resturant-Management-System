@@ -16,5 +16,10 @@ public interface NotificationService {
 
     NotificationDto markAsRead(Long notificationId);
 
-    void handleNotification(Account user, Account admin, String subject,String type);
+    void handleNotification(Account user, Account admin, String message,String type);
+
+    void deleteNotificationById(Long id);
+
+    void markAllAsRead(String username);
+
 }

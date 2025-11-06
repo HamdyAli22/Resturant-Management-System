@@ -1,6 +1,15 @@
 <div class="orders-container">
   <h2>Orders History</h2>
 
+
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchKeyword"
+      placeholder="Search by Order Code or Product Name..."
+      (input)="applyFilter()"
+    />
+  </div>
   <div *ngIf="!orders || orders.length === 0" class="no-orders-card">
     <p class="msg-en">{{ messageEn }}</p>
     <p class="msg-ar">{{ messageAr }}</p>
@@ -39,5 +48,30 @@
       </div>
     </div>
   </div>
+
+    <!-- Pagination -->
+    <div class="orders-pagination">
+        <ngb-pagination
+      *ngIf="orders.length > 0"
+      class="custom-pagination"
+      [(page)]="pageNo"
+      [pageSize]="pageSize"
+      [collectionSize]="totalOrders"
+      (pageChange)="pageChange($event)"
+      [maxSize]="5"
+      [boundaryLinks]="true">
+         </ngb-pagination>
+    </div>
+
+    <div class="sel">
+      <span class="mr-2">Page Size</span>
+      <select (change)="changePageSize($event)">
+        <option>2</option>
+        <option>5</option>
+        <option selected="true">10</option>
+        <option>20</option>
+        <option>50</option>
+      </select>
+    </div>
   </ng-container>
 </div>

@@ -27,9 +27,9 @@ export class AuthService {
     return this.http.post<any>(this.baseUrl +  'login', {username, password}).pipe(
       map(response => {
         if (response?.token) {
-          sessionStorage.setItem('token', response.token);
-          sessionStorage.setItem('userName', response.username);
-          sessionStorage.setItem('roles', response.roles);
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userName', response.username);
+          localStorage.setItem('roles', response.roles);
           this.userLoggedIn.emit(username);
         }
         return response;
@@ -39,12 +39,12 @@ export class AuthService {
   }
 
   isUserLogin(): boolean{
-     return sessionStorage.getItem('token') !== null &&
-       sessionStorage.getItem('token') !== undefined;
+     return localStorage.getItem('token') !== null &&
+       localStorage.getItem('token') !== undefined;
   }
 
   isAdmin(): boolean{
-    const roles = sessionStorage.getItem('roles');
+    const roles = localStorage.getItem('roles');
     console.log('Roles: ' + roles);
     if (!roles) {
       return false;
@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   logout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('roles');
+    localStorage.removeItem('token');
+    localStorage.removeItem('roles');
   }
 }

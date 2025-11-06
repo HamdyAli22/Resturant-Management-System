@@ -28,27 +28,40 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
               <label for="password" class="form-label">Password</label>
               <input
-                type="password"
-                class="form-control"
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control pe-5"
                 id="password"
                 placeholder="Enter your password"
                 #password
               />
+              <i
+                class="fa"
+                [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                (click)="togglePasswordVisibility('password')"
+                style="position: absolute; top: 38px; right: 15px; cursor: pointer; color: #6c757d;"
+              ></i>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
               <label for="confirmPassword" class="form-label">Confirm Password</label>
               <input
-                type="password"
-                class="form-control"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                class="form-control pe-5"
                 id="confirmPassword"
                 placeholder="Confirm your password"
                 #confirmPassword
               />
+              <i
+                class="fa"
+                [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+                (click)="togglePasswordVisibility('confirm')"
+                style="position: absolute; top: 38px; right: 15px; cursor: pointer; color: #6c757d;"
+              ></i>
             </div>
+
 
             <button
               class="btn btn-primary w-100"

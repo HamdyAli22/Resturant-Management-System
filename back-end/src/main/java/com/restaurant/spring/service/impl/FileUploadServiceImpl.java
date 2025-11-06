@@ -15,7 +15,8 @@ import java.nio.file.StandardCopyOption;
 public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public String uploadFile(MultipartFile file, String folder) throws IOException {
-        String uploadDir = "../front-end/src/assets/img/" + folder;
+      //  String uploadDir = "../front-end/src/assets/img/" + folder;
+        String uploadDir = "../uploads/" + folder;
         System.out.println("uploadDir: " + uploadDir);
         File directory = new File(uploadDir);
         if (!directory.exists()) {

@@ -31,6 +31,8 @@ import { ConfirmDialogComponent } from './componants/confirm-dialog/confirm-dial
 import { AccountDetailsComponent } from './componants/dashboard/account-details/account-details.component';
 import { ContactMessagesComponent } from './componants/dashboard/contact-messages/contact-messages.component';
 import { NotificationComponent } from './componants/notification/notification.component';
+import { AdminCategoriesComponent } from './componants/dashboard/admin-categories/admin-categories.component';
+import { AdminCategoryFormComponent } from './componants/dashboard/admin-categories/admin-category-form/admin-category-form.component';
 
 // http://localhost:4200/
 export const routes: Routes = [
@@ -65,6 +67,7 @@ export const routes: Routes = [
       { path: 'disable-account', component: DisableAccountComponent },
       { path: 'account-details', component: AccountDetailsComponent },
       { path: 'contact-messages', component: ContactMessagesComponent },
+      { path: 'categories', component: AdminCategoriesComponent },
       // default child
       { path: '', redirectTo: 'orders-history', pathMatch: 'full' }
     ]
@@ -105,7 +108,9 @@ export const routes: Routes = [
     ConfirmDialogComponent,
     AccountDetailsComponent,
     ContactMessagesComponent,
-    NotificationComponent
+    NotificationComponent,
+    AdminCategoriesComponent,
+    AdminCategoryFormComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

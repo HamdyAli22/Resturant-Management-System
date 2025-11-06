@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.username = sessionStorage.getItem('userName') || '';
+    this.username = localStorage.getItem('userName') || '';
     if (this.username) {
       this.loadUnreadCount();
       setInterval(() => this.loadUnreadCount(), 10000);

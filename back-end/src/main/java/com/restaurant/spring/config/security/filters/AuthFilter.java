@@ -60,7 +60,7 @@ public class AuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         if (request.getRequestURI().contains("login") ||
                 request.getRequestURI().contains("signup") ||
-                request.getRequestURI().contains("reset-password")) {
+                request.getRequestURI().contains("reset-password") ||request.getRequestURI().contains("/uploads/")) {
             return true;
         }
         return false;

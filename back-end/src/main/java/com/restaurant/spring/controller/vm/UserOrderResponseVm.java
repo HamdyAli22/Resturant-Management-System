@@ -29,4 +29,8 @@ public class UserOrderResponseVm implements Serializable {
         this.orders = orders;
     }
 
+    public UserOrderResponseVm(List<OrderDto> orders, Long totalOrders) {
+        this.orders = orders;
+        this.totalOrders = totalOrders;
+    }
 }

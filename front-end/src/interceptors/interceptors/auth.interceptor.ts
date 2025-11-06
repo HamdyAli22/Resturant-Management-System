@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (this.authService.isUserLogin()){
       request = request.clone({
         setHeaders: {
-          Authorization: 'Bearer ' + sessionStorage.getItem('token')
+          Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       });
     }

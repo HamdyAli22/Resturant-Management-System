@@ -1,34 +1,57 @@
 <div class="notification-dropdown card shadow-lg border-0 rounded-3">
   <div class="card-header bg-light">
-    <div class="d-flex justify-content-between align-items-center">
+
+    <!-- ✅ الصف الأول: العنوان + زر الثلاث نقاط -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
       <h5 class="mb-0 fw-bold text-dark">Notifications</h5>
-      <ul class="nav nav-tabs card-header-tabs notification-tabs">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            [ngClass]="{ 'active': activeTab === 'all' }"
-            (click)="setActiveTab('all')"
-          >
-            All
-          </a>
-        </li>
-        <li class="nav-item position-relative">
-          <a
-            class="nav-link"
-            [ngClass]="{ 'active': activeTab === 'unread' }"
-            (click)="setActiveTab('unread')"
-          >
-            Unread
-            <span
-              *ngIf="unreadCount > 0"
-              class="badge bg-danger ms-1"
-            >
-              {{ unreadCount }}
-            </span>
-          </a>
-        </li>
-      </ul>
+
+      <!-- ✅ زر الثلاث نقاط الرئيسي -->
+      <div class="dropdown">
+        <button
+          class="btn btn-sm btn-light rounded-circle three-dots"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+          <li>
+            <a class="dropdown-item" href="#" (click)="markAllAsRead($event)">
+              <i class="bi bi-check2-all me-2 text-success"></i> Mark all as read
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <!-- ✅ الصف الثاني: التبويبات -->
+    <ul class="nav nav-tabs card-header-tabs notification-tabs mt-2">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="{ 'active': activeTab === 'all' }"
+          (click)="setActiveTab('all')"
+        >
+          All
+        </a>
+      </li>
+      <li class="nav-item position-relative">
+        <a
+          class="nav-link"
+          [ngClass]="{ 'active': activeTab === 'unread' }"
+          (click)="setActiveTab('unread')"
+        >
+          Unread
+          <span
+            *ngIf="unreadCount > 0"
+            class="badge bg-danger ms-1"
+          >
+            {{ unreadCount }}
+          </span>
+        </a>
+      </li>
+    </ul>
   </div>
 
   <div class="card-body p-0">
@@ -43,12 +66,39 @@
       *ngFor="let n of filteredNotifications()"
       class="notification-item d-flex justify-content-between align-items-start px-3 py-3 border-bottom"
       [class.bg-light]="!n.read"
-      (click)="markAsRead(n)"
+      (click)="navigateBasedOnType(n)"
     >
       <div>
         <div class="fw-semibold text-dark">{{ n.message }}</div>
         <small class="text-muted">{{ getTimeAgo(n.createdDate) }}</small>
       </div>
+
+      <!-- ✅ زر الثلاث نقاط لكل إشعار -->
+      <div class="dropdown ms-2">
+        <button
+          class="btn btn-sm btn-light rounded-circle three-dots"
+          data-bs-toggle="dropdown"
+          data-bs-display="static"
+          aria-expanded="false"
+          (click)="$event.stopPropagation()"
+        >
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+          <li>
+            <a class="dropdown-item" href="#" (click)="onMarkAsReadClick($event, n)">
+              Mark as read
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item text-danger" href="#" (click)="onDeleteClick($event, n)">
+              Delete this notification
+            </a>
+          </li>
+        </ul>
+      </div>
+
       <div *ngIf="!n.read" class="unread-dot"></div>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="messages-card">
     <h3 class="title">Contact Messages</h3>
 
-    <div class="filter-section">
+    <div class="filter-section" *ngIf="messages.length !== 0">
       <div class="search-box">
         <i class="fas fa-search"></i>
         <input

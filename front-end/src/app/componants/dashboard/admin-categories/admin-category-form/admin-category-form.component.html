@@ -1,0 +1,109 @@
+<div class="container mt-4">
+  <div class="card category-form-card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white py-3 rounded-top-4">
+      <h4 class="mb-0 text-center">
+        <i class="fa fa-layer-group me-2"></i>
+        {{ mode === 'edit' ? 'Edit Category' : 'Add New Category' }}
+      </h4>
+    </div>
+
+    <div class="card-body px-4 py-4">
+      <!-- ✅ Popup Error Message -->
+      <div *ngIf="messageAr || messageEn" class="popup-message show">
+        <div class="popup-content">
+          <i class="fa fa-exclamation-circle me-2"></i>
+          <div>
+            <div *ngIf="messageAr" class="fw-bold">{{ messageAr }}</div>
+            <div *ngIf="messageEn" class="small">{{ messageEn }}</div>
+          </div>
+          <button class="btn-close" (click)="messageAr = messageEn = ''"></button>
+        </div>
+      </div>
+
+      <form #categoryForm="ngForm" (ngSubmit)="save()" novalidate>
+        <div class="row g-3">
+          <!-- Name -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Name</label>
+            <div class="input-group shadow-sm">
+              <span class="input-group-text bg-white">
+                <i class="fa fa-pen text-primary"></i>
+              </span>
+              <input type="text" class="form-control"
+                     [(ngModel)]="category.name"
+                     name="name"
+                     placeholder="Enter category name"
+                     required>
+            </div>
+          </div>
+
+          <!-- Flag -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Flag</label>
+            <div class="input-group shadow-sm">
+              <span class="input-group-text bg-white">
+                <i class="fa fa-flag text-danger"></i>
+              </span>
+              <input type="text" class="form-control"
+                     [(ngModel)]="category.flag"
+                     name="flag"
+                     placeholder="Enter category flag"
+                     required>
+            </div>
+          </div>
+
+          <!-- Logo Picker -->
+          <div class="col-md-6 position-relative">
+            <label class="form-label fw-bold">Logo</label>
+            <div class="d-flex align-items-center gap-3 logo-section">
+              <div class="preview-icon border">
+                <i [class]="'fa ' + (selectedIcon || 'fa-tag text-primary')"></i>
+              </div>
+
+              <input type="text"
+                     class="form-control flex-grow-1"
+                     [(ngModel)]="category.logo"
+                     name="logo"
+                     placeholder="Choose an icon"
+                     readonly />
+
+              <button type="button"
+                      id="iconPickerBtn"
+                      (click)="toggleIconList()">
+                <i class="fa fa-icons me-1"></i>
+              </button>
+            </div>
+            <small class="text-muted d-block mt-1">Click to pick an icon</small>
+
+            <!-- قائمة اختيار الأيقونات -->
+            <div *ngIf="showIconList" class="icon-grid shadow-lg p-3 rounded-3 mt-2">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold text-primary">Choose Icon</span>
+                <button type="button" class="btn-close" (click)="closeIconList()"></button>
+              </div>
+              <div class="d-flex flex-wrap gap-3 justify-content-center">
+                <div *ngFor="let icon of availableIcons"
+                     class="icon-option"
+                     [class.active]="selectedIcon === icon"
+                     (click)="selectIcon(icon)">
+                  <i class="fa" [ngClass]="icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-4 d-flex justify-content-center gap-3">
+          <button type="submit" class="btn btn-success px-4 py-2 shadow-sm rounded-pill">
+            <i class="fa fa-save me-2"></i> Save
+          </button>
+          <button type="button" class="btn btn-outline-secondary px-4 py-2 shadow-sm rounded-pill"
+                  (click)="cancel()">
+            <i class="fa fa-times me-2"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

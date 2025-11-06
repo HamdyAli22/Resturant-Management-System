@@ -1,73 +1,78 @@
-/* =====================[ Dropdown Items ]===================== */
-.dropdown-menu .dropdown-item {
-  padding: 10px 15px;
-  font-size: 14px;
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-  border-radius: 6px;
+/* =====================[ Dashboard Icon & Label ]===================== */
+.dashboard-link {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* مسافة طبيعية بين الأيقونة والكلمة */
 }
 
-.dropdown-menu .dropdown-item:hover {
-  background-color: #f8f9fa;
-  transform: translateX(4px);
+.dashboard-link i {
+  font-size: 16px !important;
+  color: #ffc107;
 }
 
-.dropdown-menu i {
-  min-width: 20px; /* عشان الأيقونات تبقى محاذية للنص */
+.dashboard-link span {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1;
+  transition: color 0.3s ease;
 }
 
-/* =====================[ Notification Bell & Badge ]===================== */
-
-/* الحاوية اللى شايلة الجرس */
-.nav-item.me-3 {
-  margin-left: 25px !important; /* مسافة بين Dashboard والجرس */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* الأيقونة نفسها */
-.nav-item.me-3 .fa-bell {
-  position: relative !important; /* لازم الأيقونة تبقى المرجع للبادج */
-  cursor: pointer !important;
-  transition: transform 0.2s ease, color 0.2s ease !important;
-  vertical-align: middle !important;
-  font-size: 20px !important;
-  color: #ffc107 !important;
-}
-
-/* تأثير hover على الجرس */
-.nav-item.me-3 .fa-bell:hover {
-  transform: scale(1.15);
+.dashboard-link:hover span {
   color: #ffca2c;
 }
 
-/* البادج الحمراء */
-.notification-badge {
-  position: absolute !important;
-  top: -4px !important;     /* تحريك الرقم لأعلى الأيقونة */
-  right: -6px !important;   /* محاذاة البادج ناحية اليمين */
-  font-size: 0.65rem !important;
-  padding: 3px 5px !important;
-  border-radius: 50% !important;
-  line-height: 1 !important;
-  z-index: 999 !important;
+/* =====================[ User Dropdown Styling ]===================== */
+.user-dropdown {
+  margin-left: 15px;
 }
 
-/* =====================[ Overlay Styling ]===================== */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 100;
+.user-dropdown .dropdown-toggle {
+  color: #fff !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* مسافة بسيطة بين الأيقونة واسم المستخدم والسهم */
+  transition: color 0.3s ease;
+  padding: 0 !important;
 }
 
-/* مكون الإشعارات يظهر فوق الـ overlay */
-app-notification {
-  position: absolute;
-  top: 75px;
-  right: 40px;
-  z-index: 200;
+.user-dropdown .dropdown-toggle i {
+  font-size: 18px;
+  color: #ffc107;
+}
+
+.user-dropdown .dropdown-toggle:hover {
+  color: #ffca2c !important;
+}
+
+.user-dropdown .dropdown-menu {
+  min-width: 150px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: none;
+  padding: 5px 0;
+}
+
+.user-dropdown .dropdown-item {
+  font-size: 15px;
+  padding: 8px 15px;
+  transition: background-color 0.2s ease;
+}
+
+.user-dropdown .dropdown-item i {
+  color: #ff9800;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: #f8f9fa;
+  transform: none;
+}
+
+.user-dropdown .dropdown-item.text-danger i {
+  color: #dc3545;
+}
+
+.notification-icon {
+  cursor: pointer;
 }

@@ -46,4 +46,17 @@ public class NotificationController {
         NotificationDto updated = notificationService.markAsRead(id);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteProductById(@RequestParam Long id) {
+        notificationService.deleteNotificationById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/mark-all-read")
+    public ResponseEntity<Void> markAllAsRead(@RequestParam String username) {
+        notificationService.markAllAsRead(username);
+        return ResponseEntity.noContent().build();
+    }
+
 }

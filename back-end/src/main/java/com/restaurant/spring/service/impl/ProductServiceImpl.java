@@ -2,11 +2,13 @@ package com.restaurant.spring.service.impl;
 
 import com.restaurant.spring.dto.ProductDto;
 import com.restaurant.spring.mapper.ProductMapper;
+import com.restaurant.spring.model.Category;
 import com.restaurant.spring.model.Product;
 import com.restaurant.spring.model.ProductDetails;
 import com.restaurant.spring.dto.ProductDetailsDto;
 import com.restaurant.spring.repo.CategoryRepo;
 import com.restaurant.spring.repo.ProductRepo;
+import com.restaurant.spring.service.NotificationService;
 import com.restaurant.spring.service.ProductService;
 import com.restaurant.spring.service.bundlemessage.BundleMessageService;
 import org.springframework.cache.annotation.CacheEvict;
@@ -27,12 +29,18 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     private CategoryRepo categoryRepo;
     private BundleMessageService bundleMessageService;
+    private NotificationService notificationService;
 
-    public ProductServiceImpl(ProductMapper productMapper, ProductRepo productRepo, CategoryRepo categoryRepo, BundleMessageService bundleMessageService) {
-        this.productMapper = productMapper;
+    public ProductServiceImpl(ProductRepo productRepo,
+                              ProductMapper productMapper,
+                              CategoryRepo categoryRepo,
+                              BundleMessageService bundleMessageService,
+                              NotificationService notificationService) {
         this.productRepo = productRepo;
+        this.productMapper = productMapper;
         this.categoryRepo = categoryRepo;
         this.bundleMessageService = bundleMessageService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -121,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("product.name.exist");
         }
 
-        categoryRepo.findById(productDto.getCategoryId())
+        Category category = categoryRepo.findById(productDto.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("category.not.found"));
 
         Product product = productMapper.toProduct(productDto);
@@ -132,7 +140,14 @@ public class ProductServiceImpl implements ProductService {
             product.setProductDetails(details);
         }
 
-        return productMapper.toProductDto(productRepo.save(product));
+        Product savedProduct = productRepo.save(product);
+
+        String message = String.format("A new product \"%s\" has been added under the category \"%s\".",
+                savedProduct.getName(), category.getName());
+
+        notificationService.handleNotification(null,null,message,"NEW_PRODUCT");
+
+        return productMapper.toProductDto(savedProduct);
     }
 
 

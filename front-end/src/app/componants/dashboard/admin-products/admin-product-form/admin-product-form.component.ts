@@ -7,6 +7,7 @@ import {CategoryService} from '../../../../../service/category.service';
 import {FileUploadService} from '../../../../../service/fileUpload.service';
 import {ProductOrder} from '../../../../../model/product-order';
 import {CardService} from '../../../../../service/card.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-admin-product-form',
@@ -25,7 +26,7 @@ export class AdminProductFormComponent implements OnInit {
     categoryId: null,
     productDetailsDto: {
       ingredients: null,
-      stockAvailability: false,
+      stockAvailability: true,
       specialInstructions: null,
       expiryDate: ''
     }
@@ -41,7 +42,8 @@ export class AdminProductFormComponent implements OnInit {
               private productService: ProductService,
               private categoryService: CategoryService,
               private uploadService: FileUploadService,
-              private cardService: CardService
+              private cardService: CardService,
+              private cdr: ChangeDetectorRef
              ){}
 
   ngOnInit(): void {
@@ -57,6 +59,13 @@ export class AdminProductFormComponent implements OnInit {
       };
     }
 
+    if (this.mode === 'edit' && this.product.image) {
+      const parts = this.product.image.split('/');
+      if (parts.length > 1) {
+        this.selectedFolder = parts[0]; // أول جزء من المسار هو الفولدر
+      }
+    }
+
     const today = new Date();
     this.todayDate = today.toISOString().split('T')[0];
   }
@@ -69,7 +78,9 @@ export class AdminProductFormComponent implements OnInit {
     });
   }
 
-  save(): void {
+  save(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     if (this.mode === 'add') {
       this.productService.addProduct(this.product).subscribe({
         next: () => {
@@ -119,6 +130,8 @@ export class AdminProductFormComponent implements OnInit {
   }
 
   onFileSelected = (event: any) => {
+   // event.preventDefault();
+    event.stopPropagation();
     this.selectedFile = event.target.files[0];
 
     if (this.selectedFile) {
@@ -126,6 +139,7 @@ export class AdminProductFormComponent implements OnInit {
         next: (res) => {
           this.product.image = res.path; // من JSON
           console.log('✅ File uploaded, saved path:', this.product.image);
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('❌ Upload failed', err);

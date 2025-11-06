@@ -28,7 +28,7 @@ public class ContactInfoDto implements Serializable {
     private String email;
 
     @NotEmpty(message = "not_empty.subject")
-    @Size(min = 5, max = 150, message = "size.subject")
+    @Size(min = 5, max = 60, message = "size.subject")
     private String subject;
 
 

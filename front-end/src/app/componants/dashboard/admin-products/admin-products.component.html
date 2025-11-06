@@ -24,7 +24,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let product of products">
-      <td><img [src]="'../../../assets/img/' + product.image" width="60" height="60" class="rounded"></td>
+      <td><img [src]="'http://localhost:8081/uploads/' + product.image" width="60" height="60" class="rounded"></td>
       <td>{{ product.name }}</td>
       <td>{{ product.description }}</td>
       <td>{{ product.price | currency }}</td>

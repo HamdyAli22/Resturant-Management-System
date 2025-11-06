@@ -31,7 +31,8 @@
               "src/assets/css/style.css",
               "src/assets/lib/animate/animate.min.css",
               "src/assets/lib/owlcarousel/assets/owl.carousel.min.css",
-              "src/assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css"
+              "src/assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [
               "src/assets/js/jquery-3.4.1.min.js",

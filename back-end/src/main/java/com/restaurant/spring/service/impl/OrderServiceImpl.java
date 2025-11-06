@@ -3,17 +3,20 @@ package com.restaurant.spring.service.impl;
 import com.restaurant.spring.controller.vm.RequestOrderVm;
 import com.restaurant.spring.controller.vm.ResponseOrderVm;
 import com.restaurant.spring.controller.vm.UserOrderResponseVm;
+import com.restaurant.spring.dto.ContactInfoDto;
 import com.restaurant.spring.dto.OrderDto;
 import com.restaurant.spring.dto.ProductDto;
 import com.restaurant.spring.dto.security.AccountDto;
 import com.restaurant.spring.mapper.OrderMapper;
 import com.restaurant.spring.mapper.ProductMapper;
 import com.restaurant.spring.mapper.security.AccountMapper;
+import com.restaurant.spring.model.ContactInfo;
 import com.restaurant.spring.model.Order;
 import com.restaurant.spring.model.Product;
 import com.restaurant.spring.model.security.Account;
 import com.restaurant.spring.repo.OrderRepo;
 import com.restaurant.spring.repo.ProductRepo;
+import com.restaurant.spring.service.NotificationService;
 import com.restaurant.spring.service.OrderService;
 import com.restaurant.spring.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +41,26 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     private OrderRepo orderRepo;
     private ProductRepo productRepo;
+    private NotificationService notificationService;
 
-    public OrderServiceImpl(AccountMapper accountMapper,OrderMapper orderMapper ,OrderRepo orderRepo, ProductRepo productRepo) {
+    public OrderServiceImpl(AccountMapper accountMapper,
+                            OrderMapper orderMapper ,
+                            OrderRepo orderRepo,
+                            ProductRepo productRepo,
+                            NotificationService notificationService) {
         this.accountMapper = accountMapper;
         this.orderMapper = orderMapper;
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
+        this.notificationService = notificationService;
     }
 
 
     @Override
     @Caching(evict = {
             @CacheEvict(value = "orders", allEntries = true),
-            @CacheEvict(value = "userOrders", allEntries = true)
+            @CacheEvict(value = "userOrders", allEntries = true),
+            @CacheEvict(value = "searchOrders", allEntries = true)
     })
     public ResponseOrderVm requestOrder(RequestOrderVm requestOrderVm) {
         List<Product> products = productRepo.findAllById(requestOrderVm.getProductsIds());
@@ -68,29 +78,43 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepo.save(order);
         savedOrder.setCode(CODE + savedOrder.getId());
         savedOrder = orderRepo.save(savedOrder);
+
+        //handle order notification
+        Account currentAccount = accountMapper.toAccount(accountDto);
+        String notificationType = "NEW_ORDER";
+        String message = String.format(
+                "Your order %s has been placed successfully on %s with a total of $%.2f for %.0f item(s).",
+                savedOrder.getCode(),
+                savedOrder.getOrderDate().toLocalDate(),
+                savedOrder.getTotalPrice(),
+                savedOrder.getTotalNumber()
+        );
+        notificationService.handleNotification(currentAccount, currentAccount, message, notificationType);
+        //handle order notification End
+
         return new ResponseOrderVm(savedOrder.getCode(), savedOrder.getTotalPrice() ,  savedOrder.getTotalNumber());
 
     }
 
     @Override
-    @Cacheable(value = "userOrders", key = "'userOrders'")
-    public UserOrderResponseVm getUserOrders() {
+    @Cacheable(
+            value = "userOrders",
+            key = "'user_' + T(org.springframework.security.core.context.SecurityContextHolder).context.authentication.principal.username + '_page_' + #page + '_size_' + #size"
+    )
+    public UserOrderResponseVm getUserOrders(int page,int size) {
+        Pageable pageable = getPageable(page, size);
         AccountDto accountDto = (AccountDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Order> orders = orderRepo.findByAccountIdOrderByIdDesc(accountDto.getId());
+        Page<Order> orders  = orderRepo.findByAccountIdOrderByIdDesc(accountDto.getId(),pageable);
         if (orders.isEmpty()) {
             throw new RuntimeException("order.not.found");
         }
-        List<OrderDto> orderDtos = orderMapper.toOrderDtoList(orders);
+        List<OrderDto> orderDtos = orderMapper.toOrderDtoList(orders.getContent());
         double totalPrice = orderDtos.stream()
                 .mapToDouble(OrderDto::getTotalPrice).sum();
-        Integer totalsize = (int) orderDtos.stream()
+        Integer totalSize = (int) orderDtos.stream()
                 .mapToDouble(OrderDto::getTotalNumber).sum();
-        UserOrderResponseVm userOrderResponseVm = new UserOrderResponseVm(
-                orderDtos,
-                totalsize,
-                totalPrice
-        );
-        return userOrderResponseVm;
+
+        return  new UserOrderResponseVm(orderDtos, totalSize, totalPrice,orders.getTotalElements());
     }
 
     @Override
@@ -135,6 +159,7 @@ public class OrderServiceImpl implements OrderService {
     @Caching(evict = {
             @CacheEvict(value = "orders", allEntries = true),
             @CacheEvict(value = "userOrders", allEntries = true),
+            @CacheEvict(value = "searchOrders", allEntries = true),
             @CacheEvict(value = "orderById", key = "#id")
     })
     public void deleteOrder(Long id) {
@@ -151,5 +176,41 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    @Cacheable(
+            value = "searchOrders",
+            key = "'keyword_' + #keyword + '_page_' + #page + '_size_' + #size"
+    )
+    public UserOrderResponseVm searchUserOrders(String keyword,int page,int size) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getUserOrders(page,size);
+        }
+        AccountDto accountDto = (AccountDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Order> orders = orderRepo.searchUserOrdersByKeyword(accountDto.getId(),keyword.trim());
+
+        if (orders.isEmpty()) {
+            throw new RuntimeException("order.not.found");
+        }
+
+        long total = orders.size();
+        int totalPages = (int) Math.ceil((double) total / size);
+        if (page > totalPages && totalPages > 0) {
+            page = totalPages;
+        }
+
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, orders.size());
+        if (start >= orders.size()) {
+            throw new RuntimeException("contacts.not.found");
+        }
+
+        List<Order> paginatedList = orders.subList(start, end);
+
+        List<OrderDto> orderDtos = orderMapper.toOrderDtoList(paginatedList);
+
+        return new UserOrderResponseVm(orderDtos,(long) orders.size());
+
     }
 }

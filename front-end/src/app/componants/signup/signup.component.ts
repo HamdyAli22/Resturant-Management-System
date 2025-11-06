@@ -12,6 +12,8 @@ export class SignupComponent implements OnInit {
 
   messageAr = '';
   messageEn = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -26,9 +28,9 @@ export class SignupComponent implements OnInit {
     }
     this.authService.createAccount(username, password).subscribe(
       response => {
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('userName', response.username);
-        sessionStorage.setItem('roles', response.roles);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.username);
+        localStorage.setItem('roles', response.roles);
         this.router.navigateByUrl('/products');
       },
       errorResponse => {
@@ -71,6 +73,14 @@ export class SignupComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  togglePasswordVisibility(field: 'password' | 'confirm'): void {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
   }
 
   clearMessage(): void {

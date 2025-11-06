@@ -11,11 +11,11 @@ export class FileUploadService {
   constructor(private http: HttpClient) { }
 
 
-  uploadFile(file: File, folder: string): Observable<{ path: string }> {
+  uploadFile(file: File, folder: string): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
 
-    return this.http.post<{ path: string }>(this.url, formData);
+    return this.http.post(this.url, formData);
   }
 }

@@ -12,7 +12,7 @@ export class AccountDetailsComponent implements OnInit {
   details: AccountDetails = new AccountDetails();
   messageAr = '';
   messageEn = '';
-  username: string = sessionStorage.getItem('userName') || '';
+  username: string = localStorage.getItem('userName') || '';
 
   constructor(private accountService: AccountService, private router: Router) { }
 

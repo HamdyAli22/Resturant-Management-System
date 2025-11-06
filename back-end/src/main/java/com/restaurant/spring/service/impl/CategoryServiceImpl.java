@@ -1,14 +1,19 @@
 package com.restaurant.spring.service.impl;
 
+import com.restaurant.spring.controller.vm.CategoryResponseVm;
 import com.restaurant.spring.dto.CategoryDto;
 import com.restaurant.spring.mapper.CategoryMapper;
 import com.restaurant.spring.model.Category;
 import com.restaurant.spring.repo.CategoryRepo;
 import com.restaurant.spring.service.CategoryService;
+import com.restaurant.spring.service.NotificationService;
 import com.restaurant.spring.service.bundlemessage.BundleMessageService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,15 +27,31 @@ public class CategoryServiceImpl  implements CategoryService {
     private CategoryRepo  categoryRepo;
     private CategoryMapper  categoryMapper;
     private BundleMessageService bundleMessageService;
+    private NotificationService notificationService;
 
-    public CategoryServiceImpl(CategoryRepo categoryRepo, CategoryMapper categoryMapper, BundleMessageService bundleMessageService) {
+    public CategoryServiceImpl(CategoryRepo categoryRepo,
+                               CategoryMapper categoryMapper,
+                               NotificationService notificationService,
+                               BundleMessageService bundleMessageService) {
         this.categoryRepo = categoryRepo;
         this.categoryMapper = categoryMapper;
+        this.notificationService = notificationService;
         this.bundleMessageService = bundleMessageService;
     }
 
     @Override
-    @Cacheable(value = "categories", key = "'allCategories'")
+    @Cacheable(value = "categories", key = "'allCategories_page_' + #page + '_size_' + #size")
+    public CategoryResponseVm getAllCategoriesWithPagination(int page, int size) {
+        Pageable pageable = getPageable(page, size);
+        Page<Category> categories = categoryRepo.findAllByOrderByNameAsc(pageable);
+        if (categories.isEmpty()) {
+            throw new RuntimeException("category.not.found");
+        }
+        List<CategoryDto> categoryDtos = categoryMapper.toCategoryDtoList(categories.getContent());
+        return new CategoryResponseVm(categoryDtos,categories.getTotalElements());
+    }
+
+    @Override
     public List<CategoryDto> getAllCategories() {
         List<Category> categories = categoryRepo.findAllByOrderByNameAsc();
         if (categories.isEmpty()) {
@@ -51,9 +72,13 @@ public class CategoryServiceImpl  implements CategoryService {
             throw new RuntimeException("category.name.exist");
         }
 
-       Category category = categoryMapper.toCategory(categoryDto);
+        Category category = categoryMapper.toCategory(categoryDto);
+        Category savedCategory = categoryRepo.save(category);
 
-        return categoryMapper.toCategoryDto(categoryRepo.save(category));
+        String message = "A new category \"" + savedCategory.getName() + "\" has been added.";
+        notificationService.handleNotification(null, null, message, "NEW_CATEGORY");
+
+        return categoryMapper.toCategoryDto(savedCategory);
     }
 
     @Override
@@ -135,6 +160,31 @@ public class CategoryServiceImpl  implements CategoryService {
             throw new RuntimeException("category.not.found");
         }
         categoryRepo.deleteAll(categories);
+    }
+
+    @Override
+    public CategoryResponseVm searchCategories(String keyword, int page, int size) {
+        Pageable pageable = getPageable(page, size);
+        Page<Category> categories = categoryRepo
+                .findByNameContainingIgnoreCaseOrFlagContainingIgnoreCaseOrderByNameAsc(keyword, keyword, pageable);
+
+        if (categories.isEmpty()) {
+            throw new RuntimeException("category.not.found");
+        }
+
+        List<CategoryDto> categoryDtos = categoryMapper.toCategoryDtoList(categories.getContent());
+        return new CategoryResponseVm(categoryDtos, categories.getTotalElements());
+    }
+
+    private static Pageable getPageable(int page, int size) {
+        try {
+            if (page < 1) {
+                throw new RuntimeException("error.min.one.page");
+            }
+            return PageRequest.of(page - 1, size);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

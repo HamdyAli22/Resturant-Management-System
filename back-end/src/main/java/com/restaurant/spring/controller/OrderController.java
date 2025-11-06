@@ -31,8 +31,10 @@ public class OrderController {
     }
 
     @GetMapping("/user-orders")
-    public ResponseEntity<UserOrderResponseVm> getUserOrders() {
-        UserOrderResponseVm orders = orderService.getUserOrders();
+    public ResponseEntity<UserOrderResponseVm> getUserOrders(
+            @RequestParam int page,
+            @RequestParam int size) {
+        UserOrderResponseVm orders = orderService.getUserOrders(page, size);
         return ResponseEntity.ok(orders);
     }
 
@@ -57,5 +59,13 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search-orders")
+    public ResponseEntity<UserOrderResponseVm> searchUserOrders(
+            @RequestParam(required = false) String keyword,
+            @RequestParam int page,
+            @RequestParam int size) {
+        UserOrderResponseVm response = orderService.searchUserOrders(keyword, page, size);
+        return ResponseEntity.ok(response);
+    }
 
 }

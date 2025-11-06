@@ -21,117 +21,128 @@
 </div>
 
 <div class="modal-body bg-light">
-  <form class="row g-3">
+  <form (submit)="$event.preventDefault()">
+  <div class="row g-3">
     <fieldset [disabled]="isReadOnly()">
-    <!-- Name -->
-    <div class="col-md-6">
-      <label class="form-label fw-bold">Name</label>
-      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.name" name="name" placeholder="Enter product name">
-    </div>
 
-    <!-- Price -->
-    <div class="col-md-6">
-      <label class="form-label fw-bold">Price</label>
-      <input type="number" class="form-control shadow-sm" [(ngModel)]="product.price" name="price" placeholder="Enter product price">
-    </div>
-
-    <!-- Description -->
-    <div class="col-12">
-      <label class="form-label fw-bold">Description</label>
-      <textarea rows="2" class="form-control shadow-sm" [(ngModel)]="product.description" name="description" placeholder="Write short description..."></textarea>
-    </div>
-
-    <!-- Image -->
-    <div class="col-md-6">
-      <label class="form-label fw-bold">Image</label>
-      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.image" name="image" placeholder="Upload product image">
-    </div>
-
-    <!-- Image upload -->
-<!--    <div class="col-md-6">-->
-<!--      <label class="form-label fw-bold">Image</label>-->
-<!--      <div class="input-group shadow-sm">-->
-<!--        &lt;!&ndash; لو Edit: نعرض الصورة الحالية &ndash;&gt;-->
-<!--        <div *ngIf="mode === 'edit' && product.image" class="w-100">-->
-<!--          <img [src]="'../../../assets/img/' + product.image"-->
-<!--               alt="Product Image"-->
-<!--               class="img-thumbnail mb-2"-->
-<!--               width="150" height="150">-->
-<!--          <div class="input-group">-->
-<!--            <select class="form-select" [(ngModel)]="selectedFolder" name="folder">-->
-<!--              <option value="cold-drinks">cold-drinks</option>-->
-<!--              <option value="foods">foods</option>-->
-<!--              <option value="hot-drinks">hot-drinks</option>-->
-<!--              <option value="other-foods">other-foods</option>-->
-<!--              <option value="sweets">sweets</option>-->
-<!--            </select>-->
-<!--            <input type="file" class="form-control" (change)="onFileSelected($event)">-->
-<!--          </div>-->
-<!--          <small class="text-muted">Choose a new image if you want to change the current one.</small>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; لو Add: بس Dropdown + File input &ndash;&gt;-->
-<!--        <div *ngIf="mode === 'add'" class="input-group">-->
-<!--          <select class="form-select" [(ngModel)]="selectedFolder" name="folder">-->
-<!--            <option value="cold-drinks">cold-drinks</option>-->
-<!--            <option value="foods">foods</option>-->
-<!--            <option value="hot-drinks">hot-drinks</option>-->
-<!--            <option value="other-foods">other-foods</option>-->
-<!--            <option value="sweets">sweets</option>-->
-<!--          </select>-->
-<!--          <input type="file" class="form-control" (change)="onFileSelected($event)">-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
-    <!-- Category (Dropdown) -->
-    <div class="col-md-6">
-      <label class="form-label fw-bold">Category</label>
-      <div class="input-group shadow-sm">
-    <span class="input-group-text bg-white">
-      <i class="fa fa-list text-primary"></i>
-    </span>
-        <select class="form-select" [(ngModel)]="product.categoryId" name="categoryId">
-          <option value="" disabled selected>-- Select Category --</option>
-          <option *ngFor="let cat of categories" [value]="cat.id">
-            {{ cat.name }} - {{ cat.flag }}
-          </option>
-        </select>
+      <!-- Name -->
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Name</label>
+        <input type="text" class="form-control shadow-sm"
+               [(ngModel)]="product.name" name="name"
+               placeholder="Enter product name">
       </div>
-    </div>
 
-
-    <hr class="my-3">
-
-    <h6 class="text-primary fw-bold">Product Details</h6>
-
-    <!-- Ingredients -->
-    <div class="col-12">
-      <label class="form-label fw-bold">Ingredients</label>
-      <input type="text" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.ingredients" name="ingredients" placeholder="List ingredients...">
-    </div>
-
-    <!-- Stock Availability -->
-    <div class="col-12">
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" [(ngModel)]="product.productDetailsDto.stockAvailability" name="stockAvailability">
-        <label class="form-check-label fw-bold">Available in Stock</label>
+      <!-- Price -->
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Price</label>
+        <input type="number" class="form-control shadow-sm"
+               [(ngModel)]="product.price" name="price"
+               placeholder="Enter product price">
       </div>
-    </div>
 
-    <!-- Special Instructions -->
-    <div class="col-12">
-      <label class="form-label fw-bold">Special Instructions</label>
-      <textarea rows="2" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.specialInstructions" name="specialInstructions" placeholder="Optional notes..."></textarea>
-    </div>
+      <!-- Description -->
+      <div class="col-12">
+        <label class="form-label fw-bold">Description</label>
+        <textarea rows="2" class="form-control shadow-sm"
+                  [(ngModel)]="product.description" name="description"
+                  placeholder="Write short description..."></textarea>
+      </div>
 
-    <!-- Expiry Date -->
-    <div class="col-md-6">
-      <label class="form-label fw-bold">Expiry Date</label>
-      <input type="date" class="form-control shadow-sm" [(ngModel)]="product.productDetailsDto.expiryDate" name="expiryDate" [min]="todayDate">
-    </div>
+      <!-- Image Upload -->
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Product Image</label>
+        <div class="card shadow-sm border-0">
+          <div class="card-body text-center p-3">
+            <!-- Current image -->
+            <div *ngIf="product.image" class="mb-2">
+              <img
+                [src]="'http://localhost:8081/uploads/' + product.image"
+                alt="Product Image"
+                class="img-thumbnail rounded-3"
+                style="width: 160px; height: 160px; object-fit: cover;">
+            </div>
+
+            <!-- Folder selection -->
+            <div class="input-group mb-2" *ngIf="!isReadOnly()">
+              <span class="input-group-text bg-white"><i class="fa fa-folder text-warning"></i></span>
+              <select class="form-select" [(ngModel)]="selectedFolder" name="folder">
+                <option value="cold-drinks">cold-drinks</option>
+                <option value="foods">foods</option>
+                <option value="hot-drinks">hot-drinks</option>
+                <option value="other-foods">other-foods</option>
+                <option value="sweets">sweets</option>
+              </select>
+            </div>
+
+            <!-- Upload button -->
+            <label class="btn btn-outline-warning btn-sm w-100 fw-bold" *ngIf="!isReadOnly()">
+              <i class="fa fa-upload me-1"></i> {{ product.image ? 'Change Image' : 'Upload Image' }}
+              <input type="file" hidden (change)="$event.stopPropagation(); onFileSelected($event)">
+            </label>
+
+<!--            <small class="text-muted d-block mt-1">-->
+<!--              JPG / PNG only — recommended size 300×300-->
+<!--            </small>-->
+          </div>
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Category</label>
+        <div class="input-group shadow-sm">
+          <span class="input-group-text bg-white">
+            <i class="fa fa-list text-primary"></i>
+          </span>
+          <select class="form-select" [(ngModel)]="product.categoryId" name="categoryId">
+            <option value="" disabled selected>-- Select Category --</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">
+              {{ cat.name }} - {{ cat.flag }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="my-3">
+      <h6 class="text-primary fw-bold">Product Details</h6>
+
+      <!-- Ingredients -->
+      <div class="col-12">
+        <label class="form-label fw-bold">Ingredients</label>
+        <input type="text" class="form-control shadow-sm"
+               [(ngModel)]="product.productDetailsDto.ingredients"
+               name="ingredients" placeholder="List ingredients...">
+      </div>
+
+      <!-- Stock Availability -->
+      <div class="col-12">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input"
+                 [(ngModel)]="product.productDetailsDto.stockAvailability"
+                 name="stockAvailability">
+          <label class="form-check-label fw-bold">Available in Stock</label>
+        </div>
+      </div>
+
+      <!-- Special Instructions -->
+      <div class="col-12">
+        <label class="form-label fw-bold">Special Instructions</label>
+        <textarea rows="2" class="form-control shadow-sm"
+                  [(ngModel)]="product.productDetailsDto.specialInstructions"
+                  name="specialInstructions" placeholder="Optional notes..."></textarea>
+      </div>
+
+      <!-- Expiry Date -->
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Expiry Date</label>
+        <input type="date" class="form-control shadow-sm"
+               [(ngModel)]="product.productDetailsDto.expiryDate"
+               name="expiryDate" [min]="todayDate">
+      </div>
+
     </fieldset>
+  </div>
   </form>
 </div>
 
@@ -147,7 +158,7 @@
     *ngIf="!isReadOnly()"
     type="button"
     class="btn-save fw-bold"
-    (click)="save()">
+    (click)="save($event)">
     💾 Save
   </button>
 
@@ -159,5 +170,3 @@
     🛒 Add to Card
   </button>
 </div>
-
-

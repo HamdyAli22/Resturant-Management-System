@@ -1,0 +1,27 @@
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+}
+
+.actions-cell {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.table img, .table i {
+  vertical-align: middle;
+}

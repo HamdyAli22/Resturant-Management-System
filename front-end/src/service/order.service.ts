@@ -14,8 +14,8 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  getUserOrders(): Observable<OrdersResponse> {
-    return this.http.get<OrdersResponse>(this.baseUrl + 'user-orders');
+  getUserOrders(pageNo, pageSize): Observable<OrdersResponse> {
+    return this.http.get<OrdersResponse>(this.baseUrl + 'user-orders?' + 'page=' + pageNo + '&size=' + pageSize);
   }
 
   getAllOrders(pageNo, pageSize, username?: string): Observable<OrdersResponse> {
@@ -33,5 +33,12 @@ export class OrderService {
   deleteOrder(id: number): Observable<any> {
     return this.http.delete(this.baseUrl + 'delete-order?id=' + id);
   }
+
+  searchUserOrders(keyword: string, pageNo: number, pageSize: number): Observable<OrdersResponse> {
+    const url = this.baseUrl + 'search-orders?' + 'keyword=' + keyword + '&page=' + pageNo + '&size=' + pageSize;
+    return this.http.get<OrdersResponse>(url);
+  }
+
+
 
 }

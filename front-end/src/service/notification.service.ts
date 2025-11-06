@@ -24,4 +24,12 @@ export class NotificationService {
     return this.http.put<void>(this.baseUrl + '/mark-read?id=' + notificationId, {});
   }
 
+  deleteNotification(id: number): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + '/delete?id=' + id);
+  }
+
+  markAllAsRead(username: string): Observable<void> {
+    return this.http.put<void>(this.baseUrl + '/mark-all-read?username=' + username, {});
+  }
+
 }

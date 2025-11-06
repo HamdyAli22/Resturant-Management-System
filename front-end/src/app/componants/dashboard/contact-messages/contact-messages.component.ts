@@ -16,7 +16,7 @@ export class ContactMessagesComponent implements OnInit {
   pageSize = 10;
   totalMessages: number;
   searchKey = '';
-  username: string = sessionStorage.getItem('userName') || '';
+  username: string = localStorage.getItem('userName') || '';
   searchKeyword = '';
   constructor(private contactService: ContactInfoService, private authService: AuthService) { }
 

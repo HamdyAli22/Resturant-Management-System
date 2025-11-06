@@ -25,3 +25,8 @@ spring:
 token:
   secret: mysupersecretkeymysupersecretkey1234
   time: 24H
+
+
+app:
+  upload:
+    dir: F:/Eraasoft Java Course/Projects/resturant-management-system/uploads/

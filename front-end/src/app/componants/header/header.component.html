@@ -1,24 +1,34 @@
 <!-- Navbar & Hero Start -->
 <div class="container-xxl position-relative p-0">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
+    <!-- ✅ Logo -->
     <a routerLink="/products" class="navbar-brand p-0">
       <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
-      <!-- <img src="img/logo.png" alt="Logo"> -->
     </a>
+
+    <!-- ✅ Toggle for mobile -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
       <span class="fa fa-bars"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <input *ngIf="showSearch()" #key class="form-control" type="search" placeholder="Search" aria-label="Search" (input)="search(key.value)">
-<!--      <button class="btn btn-outline-success" type="submit" (click)="search(key.value)">Search</button>-->
-      <div class="navbar-nav ms-auto py-0 pe-4">
-        <div *ngIf="isUserLogin() && !isAdmin()" class="nav-item nav-link active"><a routerLink="/contact-info">Contact</a></div>
-        <div class="nav-item nav-link active"> </div>
-        <div *ngIf="isUserLogin()" class="nav-item nav-link active"><a routerLink="/chefs">Team</a></div>
-        <div *ngIf="!isUserLogin()" class="nav-item nav-link active"><a routerLink="/login">Login</a></div>
-        <div *ngIf="!isUserLogin()" class="nav-item nav-link active"><a routerLink="/signup">Signup</a></div>
-        <div *ngIf="isUserLogin()" class="nav-item nav-link active"><a (click)="logout()" routerLink="/signup">Logout</a></div>
-        <div class="nav-item nav-link active"> </div>
+      <!-- ✅ Navbar Links -->
+      <div class="navbar-nav me-auto py-0 pe-4">
+        <div *ngIf="isUserLogin() && !isAdmin()" class="nav-item nav-link active">
+          <a routerLink="/contact-info">Contact</a>
+        </div>
+
+        <div *ngIf="isUserLogin()" class="nav-item nav-link active">
+          <a routerLink="/chefs">Team</a>
+        </div>
+
+        <div *ngIf="!isUserLogin()" class="nav-item nav-link active">
+          <a routerLink="/login">Login</a>
+        </div>
+
+        <div *ngIf="!isUserLogin()" class="nav-item nav-link active">
+          <a routerLink="/signup">Signup</a>
+        </div>
 
         <div *ngIf="isUserLogin()" class="nav-item">
           <a routerLink="/dashboard" class="nav-link d-flex align-items-center dashboard-link">
@@ -26,64 +36,56 @@
             <span>Dashboard</span>
           </a>
         </div>
-        <div *ngIf="isUserLogin()" class="nav-item me-3">
-          <div class="position-relative">
-            <i class="fas fa-bell fa-lg text-warning" (click)="toggleNotifications()"></i>
-            <span
-              *ngIf="unreadCount > 0"
-              class="badge bg-danger rounded-circle notification-badge"
-            >
-      {{ unreadCount }}
-            </span>
-          </div>
-        </div>
-
-
-        <!--        <div *ngIf="isUserLogin()" class="nav-item dropdown">-->
-<!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
-<!--            <i class="fas fa-list"></i> Account Menu-->
-<!--          </a>-->
-<!--          <div class="dropdown-menu dropdown-menu-end shadow-lg rounded-3 p-2">-->
-<!--            <a href="booking.html" class="dropdown-item d-flex align-items-center">-->
-<!--              <i class="fas fa-history me-2 text-primary"></i> Show Orders History-->
-<!--            </a>-->
-<!--            <a href="team.html" class="dropdown-item d-flex align-items-center">-->
-<!--              <i class="fas fa-box-open me-2 text-success"></i> Show All Orders-->
-<!--            </a>-->
-<!--            <a href="testimonial.html" class="dropdown-item d-flex align-items-center">-->
-<!--              <i class="fas fa-plus-circle me-2 text-warning"></i> Add New Product-->
-<!--            </a>-->
-<!--            <a href="testimonial.html" class="dropdown-item d-flex align-items-center">-->
-<!--              <i class="fas fa-key me-2 text-info"></i> Change Password-->
-<!--            </a>-->
-<!--            <a href="testimonial.html" class="dropdown-item d-flex align-items-center text-danger">-->
-<!--              <i class="fas fa-user-slash me-2"></i> Remove Account-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </div>-->
-
-        <!--<a href="contact.html" class="nav-item nav-link">Contact</a>-->
       </div>
 
+      <!-- ✅ اليمين: Cart + Notification + User -->
+      <div class="d-flex align-items-center ms-auto gap-3">
+        <!-- ✅ Cart -->
+        <app-card *ngIf="showCard()"></app-card>
 
+        <!-- ✅ Notification -->
+        <div *ngIf="isUserLogin()" class="nav-item me-2 position-relative notification-icon">
+          <i class="fas fa-bell fa-lg text-warning" (click)="toggleNotifications()"></i>
+          <span *ngIf="unreadCount > 0" class="badge bg-danger rounded-circle notification-badge">
+            {{ unreadCount }}
+          </span>
+        </div>
+
+        <!-- ✅ User Dropdown -->
+        <div *ngIf="isUserLogin()" class="nav-item dropdown user-dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            id="userMenu"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user-circle fa-lg text-warning me-2"></i>
+            <span class="fw-semibold text-light">{{ username }}</span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg mt-2" aria-labelledby="userMenu">
+            <li>
+              <a class="dropdown-item d-flex align-items-center text-danger" (click)="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <app-card *ngIf="showCard()"></app-card>
   </nav>
 
-  <!-- ✅ Notification Dropdown Component -->
+  <!-- ✅ Notification Dropdown -->
   <app-notification
     *ngIf="showNotifications"
     (closed)="toggleNotifications()"
     (unreadCountChanged)="unreadCount = $event"
   ></app-notification>
 
-  <div
-    *ngIf="showNotifications"
-    class="overlay"
-    (click)="toggleNotifications()"
-  ></div>
+  <div *ngIf="showNotifications" class="overlay" (click)="toggleNotifications()"></div>
 
-  <div class="container-xxl py-5 bg-dark hero-header mb-5">
-  </div>
+  <div class="container-xxl py-5 bg-dark hero-header mb-5"></div>
 </div>
 <!-- Navbar & Hero End -->

@@ -1,20 +1,21 @@
-/* =====================[ Notification Dropdown ]===================== */
+/* =====================[ Notification Dropdown (Main Menu) ]===================== */
 .notification-dropdown {
-  position: absolute;
-  top: 45px; /* 👈 أقرب للأيقونة بدون فراغ كبير */
-  right: -10px; /* 👈 لتكون بمحاذاة الجرس بدقة */
-  width: 400px; /* 👈 زودنا العرض */
-  max-height: 550px; /* 👈 زودنا الطول */
-  overflow-y: auto;
+  position: fixed;          /* ✅ بدل absolute علشان تفضل ثابتة */
+  top: 60px;                /* ✅ نزّلها تحت الـ header */
+  right: 80px;              /* ✅ عدّل حسب مكان الجرس عندك */
+  width: 420px;
+  max-height: 600px;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  z-index: 1050;
+  z-index: 2000;            /* ✅ أعلى من أي عنصر آخر */
   animation: slideDown 0.3s ease;
-  font-size: 15px; /* 👈 كبرنا الخط */
+  font-size: 15px;
+  overflow-x: hidden;
+  overflow-y: auto;         /* ✅ scroll داخلي */
 }
 
-/* Scrollbar */
+/* ===================== Scrollbar ===================== */
 .notification-dropdown::-webkit-scrollbar {
   width: 8px;
 }
@@ -26,10 +27,10 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Header & Tabs */
+/* ===================== Header & Tabs ===================== */
 .card-header {
   border-bottom: 1px solid #dee2e6;
-  padding: 14px 18px;
+  padding: 14px 18px 8px;
   background-color: #f9fafb;
   font-weight: 600;
   color: #333;
@@ -39,6 +40,8 @@
   display: flex;
   gap: 10px;
   border-bottom: none;
+  border-top: 1px solid #e9ecef;
+  padding-top: 6px;
 }
 
 .notification-tabs .nav-link {
@@ -52,11 +55,12 @@
   border-bottom: 2px solid #ffc107;
 }
 
-/* Notification Items */
+/* ===================== Notification Items ===================== */
 .notification-item {
   padding: 14px 18px;
   border-bottom: 1px solid #f2f2f2;
   transition: background-color 0.2s ease;
+  position: relative;
 }
 
 .notification-item:hover {
@@ -64,7 +68,23 @@
   cursor: pointer;
 }
 
-/* النقطة الحمراء بجانب الإشعارات غير المقروءة */
+/* ===================== زر الثلاث نقاط ===================== */
+.three-dots {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+}
+
+.three-dots i {
+  font-size: 18px;
+  color: #555;
+}
+
+/* ===================== النقطة الحمراء ===================== */
 .unread-dot {
   width: 10px;
   height: 10px;
@@ -75,7 +95,71 @@
   margin-top: 4px;
 }
 
-/* Animation */
+/* ===================== المنيو الصغيرة (Dropdown Menu) ===================== */
+.notification-item .dropdown-menu {
+  position: absolute !important;
+  top: 35px !important;
+  right: 0 !important;
+  min-width: 180px;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  z-index: 2000 !important;
+}
+
+/* ===================== Notification Bell & Badge ===================== */
+.nav-item.me-3 {
+  position: relative; /* مهم جدًا لتثبيت المنيو بالنسبة للأيقونة */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.nav-item.me-3 .fa-bell {
+  position: relative !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+  vertical-align: middle !important;
+  font-size: 20px !important;
+  color: #ffc107 !important;
+}
+
+.nav-item.me-3 .fa-bell:hover {
+  transform: scale(1.15);
+  color: #ffca2c;
+}
+
+/* البادج الحمراء */
+.notification-badge {
+  position: absolute !important;
+  top: -4px !important;
+  right: -6px !important;
+  font-size: 0.65rem !important;
+  padding: 3px 5px !important;
+  border-radius: 50% !important;
+  line-height: 1 !important;
+  z-index: 999 !important;
+}
+
+/* ===================== Overlay Styling ===================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+/* المكون يظهر فوق الـ overlay مباشرة */
+app-notification {
+  position: absolute;
+  top: 0; /* سيتم التحكم عبر parent */
+  right: 0;
+  z-index: 200;
+}
+
+/* ===================== Animation ===================== */
 @keyframes slideDown {
   from {
     opacity: 0;

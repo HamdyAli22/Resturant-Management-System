@@ -20,6 +20,12 @@
         </a>
       </li>
 
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a class="nav-link" routerLink="categories" routerLinkActive="active">
+          <i class="fas fa-tags icon-categories"></i> Categories
+        </a>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" routerLink="change-password" routerLinkActive="active">
           <i class="fas fa-key icon-password"></i> Change Password

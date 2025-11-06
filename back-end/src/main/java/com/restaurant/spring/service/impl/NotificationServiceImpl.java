@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -91,29 +92,83 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void handleNotification(Account user, Account admin, String subject,String type){
-        Notification notification = new Notification();
-        notification.setType(type);
+    public void handleNotification(Account user, Account admin, String message,String type){
+
         switch (type){
             case "NEW_MESSAGE":
-                notification.setAccount(admin);
-                notification.setMessage("User " + user.getUsername() + " sent a new message: \"" + subject + "\"");
+                saveNotification(admin,
+                        "User " + user.getUsername() + " sent a new message: \"" + message + "\"",
+                         type);
                 break;
+
             case "UPDATE_MESSAGE":
-//                Account admin = accountRepo.findFirstByRoles_RoleNameIgnoreCase("ADMIN")
-//                        .orElseThrow(() -> new RuntimeException("admin.not.found"));
-                notification.setAccount(admin);
-                notification.setMessage("User " + user.getUsername() + " updated their message: \"" + subject + "\"");
+                saveNotification(admin,
+                        "User " + user.getUsername() + " updated their message: \"" + message + "\"",
+                        type);
                 break;
+
             case "ADMIN_REPLY":
-                notification.setAccount(user);
-                notification.setMessage("Admin replied to your message: \"" + subject + "\"");
+                saveNotification(user,
+                        "Admin replied to your message: \"" + message + "\"",
+                        type);
                 break;
+
+            case "NEW_ORDER":
+                saveNotification(user,message,type);
+                break;
+
+            case "NEW_PRODUCT", "NEW_CATEGORY":
+                List<Account> allUsers = accountRepo.findAll().stream()
+                        .filter(acc -> acc.getRoles().stream()
+                                .anyMatch(role -> role.getRoleName().equalsIgnoreCase("USER")))
+                        .toList();
+                saveNotifications(allUsers,message,type);
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown notification type: " + type);
         }
+    }
 
+    private void saveNotification(Account account, String message, String type) {
+        Notification notification = new Notification();
+        notification.setType(type);
+        notification.setAccount(account);
+        notification.setMessage(message);
         notification.setRead(false);
         notificationRepo.save(notification);
+    }
+
+    public void saveNotifications(List<Account> accounts, String message, String type) {
+        if (accounts == null || accounts.isEmpty()) return;
+
+        List<Notification> notifications = accounts.stream()
+                .map(acc -> {
+                    Notification notif = new Notification();
+                    notif.setType(type);
+                    notif.setAccount(acc);
+                    notif.setMessage(message);
+                    notif.setRead(false);
+                    return notif;
+                })
+                .toList();
+
+        notificationRepo.saveAll(notifications);
+    }
+
+    @Override
+    public void deleteNotificationById(Long id) {
+        Notification notification = notificationRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("notification.not.found"));
+        notificationRepo.delete(notification);
+    }
+
+    @Override
+    @Transactional
+    public void markAllAsRead(String username) {
+        Account account = accountRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("account.username.notExists"));
+
+        notificationRepo.markAllAsReadByAccount(account);
     }
 }

@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   messageAr = '';
   messageEn = '';
+  showPassword = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -26,9 +27,9 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(username, password).subscribe(
       response => {
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('userName', response.username);
-        sessionStorage.setItem('roles', response.roles);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.username);
+        localStorage.setItem('roles', response.roles);
         this.router.navigateByUrl('/products');
       },
       error => {
@@ -59,6 +60,10 @@ export class LoginComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   clearMessage(): void {

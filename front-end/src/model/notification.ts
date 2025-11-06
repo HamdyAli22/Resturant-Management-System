@@ -6,4 +6,5 @@ export class Notification {
   read: boolean;
   account?: Account;
   createdDate: string| Date;
+  type: string;
 }
