@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../service/auth.service';
 import {NotificationService} from '../../../service/notification.service';
@@ -15,7 +15,8 @@ export class HeaderComponent implements OnInit{
 
   constructor(private router: Router,
               private authService: AuthService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private elRef: ElementRef) {
   }
 
   ngOnInit(): void {
@@ -68,6 +69,13 @@ export class HeaderComponent implements OnInit{
 
   isAdmin(): boolean{
     return this.authService.isAdmin();
+  }
+
+  @HostListener('document:click', ['$event']) handleClickOutside = (event: Event) => {
+    const clickedInside = this.elRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.showNotifications = false;
+    }
   }
 
 }

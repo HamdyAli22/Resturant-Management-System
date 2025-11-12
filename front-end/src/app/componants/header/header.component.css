@@ -74,6 +74,15 @@
   color: #ffc107;
 }
 
+.user-dropdown .dropdown-item.text-danger {
+  cursor: pointer;
+}
+
+.user-dropdown .dropdown-item.text-danger:hover {
+  background-color: #f8f9fa;
+  transform: none;
+}
+
 .user-dropdown .dropdown-toggle:hover {
   color: #ffca2c !important;
 }

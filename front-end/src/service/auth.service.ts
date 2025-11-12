@@ -24,6 +24,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<any>{
+    localStorage.clear();
     return this.http.post<any>(this.baseUrl +  'login', {username, password}).pipe(
       map(response => {
         if (response?.token) {

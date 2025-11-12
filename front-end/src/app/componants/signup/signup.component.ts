@@ -26,12 +26,17 @@ export class SignupComponent implements OnInit {
       this.autoClearMessage();
       return;
     }
+
+    localStorage.clear();
+
     this.authService.createAccount(username, password).subscribe(
       response => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.username);
         localStorage.setItem('roles', response.roles);
-        this.router.navigateByUrl('/products');
+        this.router.navigateByUrl('/products').then(() => {
+          window.location.reload();
+        });
       },
       errorResponse => {
         if (Array.isArray(errorResponse.error)) {

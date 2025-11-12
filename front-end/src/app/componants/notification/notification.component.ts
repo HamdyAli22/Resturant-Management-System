@@ -117,12 +117,14 @@ export class NotificationComponent implements OnInit {
   }
 
   onMarkAsReadClick(event: MouseEvent, notification: Notification): void {
+    event.preventDefault();
     event.stopPropagation(); // ✅ يمنع الانتقال للصفحة
     this.markAsRead(notification); // ✅ يخليها مقرؤة فقط
     this.closeDropdownMenu(event);
   }
 
   onDeleteClick(event: MouseEvent, notification: Notification): void {
+    event.preventDefault();
     event.stopPropagation(); // يمنع التنقل للصفحة
 
     // حذف الإشعار من السيرفر
@@ -167,6 +169,7 @@ export class NotificationComponent implements OnInit {
 
   markAllAsRead(event?: MouseEvent): void {
     if (event) {
+      event.preventDefault();
       event.stopPropagation();
     }
 
